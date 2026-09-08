@@ -1,0 +1,11 @@
+{
+  "generatorName": "dart-dio",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "pubName": "musttip_notifications",
+    "pubVersion": "1.0.0"
+  }
+}

@@ -1,0 +1,8 @@
+pytest>=8
+PyYAML>=6
+jsonschema>=4
+mypy>=1.10
+ruff
+build
+setuptools>=70
+wheel

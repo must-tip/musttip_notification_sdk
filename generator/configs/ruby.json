@@ -1,0 +1,12 @@
+{
+  "generatorName": "ruby",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "gemName": "musttip_notifications",
+    "gemVersion": "1.0.0",
+    "moduleName": "MustTipNotifications"
+  }
+}

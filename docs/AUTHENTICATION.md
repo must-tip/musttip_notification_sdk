@@ -1,51 +1,25 @@
-# Authentication and tenancy
+# Authentication
 
-## Resource server
+The notification SDK is a resource client for the Must Tip notification resource server. It is not an authentication SDK and it cannot make a caller a tenant.
 
-The notification API is an OAuth resource server with audience:
+## Required authority
 
-```text
-urn:musttip:notification-service
-```
+Obtain access tokens from the Must Tip authentication system for audience:
 
-The authentication service remains authoritative for tenants, OAuth clients, applications, service memberships, roles, permissions, scopes, client status, revocation, DPoP and mTLS.
+`urn:musttip:notification-service`
 
-## Recommended backend principal
+The resource-server manifest recommends `client_credentials` with `private_key_jwt` for service integrations. The notification server validates the token, tenant status, application status, membership/status, authorization version and required OAuth scopes.
 
-Use a confidential service application and `client_credentials`. A verified principal should contain:
+## No tenant override
 
-```json
-{
-  "sub": "service-membership-subject",
-  "tenant_id": "tenant-a",
-  "application_id": "app-a",
-  "client_id": "oauth-client-a",
-  "principal_type": "service",
-  "session_type": "service",
-  "aud": ["urn:musttip:notification-service"],
-  "scope": "notifications.send notifications.read",
-  "authz_version": 12,
-  "permissions_hash": "<authorization-snapshot-hash>",
-  "jti": "<unique-token-id>",
-  "tenant_status": "active",
-  "application_status": "active",
-  "membership_status": "active",
-  "verified": true
-}
-```
+The SDK intentionally has no `tenant_id` setting. It rejects tenant authority in headers, queries and top-level request bodies. It also blocks protected headers such as `Authorization`, `X-Tenant-ID`, and `X-Application-ID` from custom/default header maps.
 
-## Isolation
+This means a forged tenant identifier cannot create an alternate trust path. A forged/invalid token is rejected by the authentication/resource servers; the SDK does not attempt to trust unverified token claims.
 
-Application credentials may access only records where both identifiers match the verified principal and are non-empty. Tenant-wide access requires an explicit tenant scope and policy grant. The SDK never accepts tenant or application identifiers as an authority override.
+## Application targeting
 
-## Token provider pattern
+Application-scoped principals use the application embedded in the verified token. Tenant-wide principals may use the canonical `/applications/{application_id}/...` routes, but the notification service still verifies that the target application belongs to the authenticated tenant and that the principal holds the required tenant-wide authorization.
 
-Use a token-provider callback so clients obtain short-lived tokens and rotate credentials without reconstructing the SDK client. Cache tokens only until shortly before expiration and never log them.
+## Token provider
 
-## Frontend rule
-
-Management tokens belong only in trusted backends. Browser and mobile clients should use:
-
-- the developer's own authenticated backend for management actions;
-- narrowly scoped push-token registration flows;
-- short-lived, single-use realtime recipient tickets.
+Prefer a callable token provider so normal token rotation/refresh can happen outside the notification client without rebuilding the client object. Never log access tokens.

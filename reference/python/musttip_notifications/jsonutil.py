@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import math
-from typing import Any
 
 from .errors import ProtocolError
 
@@ -24,14 +23,33 @@ def _constant(value: str) -> object:
     raise ValueError(f"non-finite number {value!r} is forbidden")
 
 
+def _finite_float(value: str) -> float:
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("non-finite response number")
+    return number
+
+
 def loads_strict(raw: bytes, *, maximum_bytes: int) -> object:
     if len(raw) > maximum_bytes:
         raise ProtocolError("response body exceeds the configured maximum")
     if not raw:
         return None
     try:
-        return json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs, parse_constant=_constant)
-    except (UnicodeDecodeError, json.JSONDecodeError, DuplicateJsonKey, ValueError) as exc:
+        result = json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs, parse_constant=_constant, parse_float=_finite_float)
+        pending = [(result, 0)]
+        nodes = 0
+        while pending:
+            value, depth = pending.pop()
+            nodes += 1
+            if depth > 32 or nodes > 50_000:
+                raise ProtocolError("response JSON is too complex")
+            if isinstance(value, dict):
+                pending.extend((item, depth + 1) for item in value.values())
+            elif isinstance(value, list):
+                pending.extend((item, depth + 1) for item in value)
+        return result
+    except (UnicodeDecodeError, json.JSONDecodeError, DuplicateJsonKey, ValueError, RecursionError) as exc:
         raise ProtocolError("service returned malformed JSON") from exc
 
 

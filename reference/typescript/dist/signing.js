@@ -16,7 +16,7 @@ export async function signEventPayload(payload, secret, keyId) {
     if (!keyId || keyId.length > 64 || /\s/.test(keyId))
         throw new ConfigurationError("event signing key ID is invalid");
     const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-    const signature = new Uint8Array(await crypto.subtle.sign("HMAC", key, payload));
+    const signature = new Uint8Array(await crypto.subtle.sign("HMAC", key, new Uint8Array(payload)));
     return { signature: base64Url(signature), "signature-key-id": keyId };
 }
 export async function verifyEventPayload(payload, headers, secrets, required = true) {
@@ -29,9 +29,13 @@ export async function verifyEventPayload(payload, headers, secrets, required = t
     }
     if (!signature || !keyId)
         throw new ProtocolError("event signature headers are incomplete");
-    const secret = secrets[keyId];
+    if (!/^[A-Za-z0-9_-]{43}$/.test(signature))
+        throw new ProtocolError("event signature is invalid");
+    const secret = Object.hasOwn(secrets, keyId) ? secrets[keyId] : undefined;
     if (!secret)
         throw new ProtocolError("event signing key is unknown");
+    if (secret.length < 32)
+        throw new ConfigurationError("event signing secret must contain at least 32 characters");
     const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["verify"]);
     let supplied;
     try {
@@ -40,7 +44,7 @@ export async function verifyEventPayload(payload, headers, secrets, required = t
     catch {
         throw new ProtocolError("event signature is invalid");
     }
-    const valid = await crypto.subtle.verify("HMAC", key, supplied, payload);
+    const valid = await crypto.subtle.verify("HMAC", key, new Uint8Array(supplied), new Uint8Array(payload));
     if (!valid)
         throw new ProtocolError("event signature is invalid");
     return true;

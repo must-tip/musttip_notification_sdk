@@ -1,6 +1,6 @@
 {
   "name": "musttip-notification-sdk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "contract_first": true,
   "api": {
     "version": "v1",
@@ -29,41 +29,18 @@
   "authentication": {
     "oauth_audience": "urn:musttip:notification-service",
     "recommended_grant": "client_credentials",
+    "recommended_token_endpoint_auth_method": "private_key_jwt",
+    "tenant_authority": "server_verified_only",
     "browser_management_credentials_forbidden": true
   },
   "event_signing": {
     "algorithm": "HMAC-SHA256",
     "encoding": "base64url without padding",
-    "headers": [
-      "signature",
-      "signature-key-id"
-    ],
+    "headers": ["signature", "signature-key-id"],
     "minimum_secret_characters": 32
   },
   "generated_client_targets": [
-    "python",
-    "typescript-fetch",
-    "go",
-    "java",
-    "csharp",
-    "php",
-    "ruby",
-    "kotlin",
-    "swift5",
-    "rust",
-    "dart-dio"
+    "python", "typescript-fetch", "go", "java", "csharp", "php", "ruby", "kotlin", "swift5", "rust", "dart-dio"
   ],
-  "reference_clients": [
-    "python",
-    "typescript"
-  ]
+  "reference_clients": ["python", "typescript"]
 }
-
-
-
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https: //github.com/must-tip/musttip_notification_sdk.git
-git push -u origin main

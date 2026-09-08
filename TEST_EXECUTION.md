@@ -1,42 +1,22 @@
-# Test Execution
+# Verification — 2026-09-08
 
-## Passed
+Executed against the sibling notification backend and Python 3.12 environment:
 
-```text
-pytest -q
-14 passed
-```
+- Combined SDK/backend pytest: 630 passed, 5 deployment-dependent skips.
+- SDK Python suite: 47 tests (included in combined count).
+- TypeScript 5.9.3 strict compilation and 7 Node runtime regression tests pass.
+- Python mypy: SDK 10 files and backend 341 files pass.
+- Ruff checks pass; Bandit finds no unsuppressed medium/high findings.
+  The explicit loopback-only TLS verification opt-out has a documented exception.
+- Contract conformance: 53 operations; all resolve to matching backend HTTP methods.
+- Real loopback HTTP SDK-to-Django capabilities and authentication rejection pass.
+  OAuth verification and policy authorization are controlled test fixtures.
+- Python wheel and npm tarball rebuilt; installed wheel imports its 53-operation catalog.
+- Dependency consistency passes; Django reports no migration drift.
 
-The test suite covers REST operation completeness, URL versioning, idempotency metadata, tenant/application authority exclusion, AsyncAPI routes, local reference resolution, JSON Schema fixtures, realtime envelopes, recipient ticket subprotocols, event signature vectors, tamper rejection, reference-client retry behaviour and generator target coverage.
-
-Additional checks passed:
-
-```text
-python -m compileall
-TypeScript strict build
-TypeScript runtime conformance
-Python wheel build and isolated install
-TypeScript npm tarball build
-Go build
-Java compile
-PHP syntax check
-Ruby syntax check
-Kotlin compile
-Swift compile
-TypeScript example type-check
-Shell syntax checks
-JSON/YAML parsing
-OpenAPI/AsyncAPI local-reference validation
-```
-
-## Not run
-
-- Live REST calls against the complete notification service.
-- Live OAuth client-credentials and remote-principal verification.
-- Live WebSocket and recipient-ticket flows.
-- Kafka/NATS event consumption.
-- Provider delivery and receipt reconciliation.
-- C# compilation because `dotnet` was unavailable.
-- Actual OpenAPI client generation because `openapi-generator-cli` was unavailable.
-
-The Python wheel initially could not build with isolated dependency resolution because the execution environment had no package-index access. It was then built successfully with `--no-build-isolation` using the installed Setuptools 82.0.1.
+Production approval remains blocked: the local deployment check cannot read the
+configured authentication CA bundle. Test settings intentionally disable deployment
+TLS/cookie enforcement and brokers. The deployed notification task handler, real
+OAuth/mTLS service, PostgreSQL, Kafka/NATS, WebSocket delivery, and notification
+providers still need staging validation. Passing local tests is not proof that the
+complete deployed system is production-ready or bug-free.

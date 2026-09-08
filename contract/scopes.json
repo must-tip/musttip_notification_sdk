@@ -18,6 +18,10 @@
       "description": "Cancel eligible notifications."
     },
     {
+      "name": "notifications.delete",
+      "description": "Delete notifications owned by the authenticated tenant/application and recipient."
+    },
+    {
       "name": "notifications.digests.read",
       "description": "Read application-owned digest batches."
     },

@@ -1,0 +1,46 @@
+{
+  "resource_server": {
+    "name": "Must Tip Notification Service",
+    "identifier": "urn:musttip:notification-service",
+    "is_active": true,
+    "introspection_enabled": true,
+    "require_dpop": false,
+    "require_mtls": false
+  },
+  "scopes": [
+    "notifications.send",
+    "notifications.batch.send",
+    "notifications.read",
+    "notifications.cancel",
+    "notifications.delete",
+    "notifications.retry",
+    "notifications.attempts.read",
+    "notifications.receipts.read",
+    "notifications.events.write",
+    "notifications.attachments.write",
+    "notifications.tokens.write",
+    "notifications.preferences.read",
+    "notifications.preferences.write",
+    "notifications.templates.read",
+    "notifications.templates.write",
+    "notifications.digests.read",
+    "notifications.digests.write",
+    "notifications.realtime",
+    "notifications.usage.read",
+    "notifications.tenant.read",
+    "notifications.tenant.manage"
+  ],
+  "recommended_service_profile": {
+    "application_type": "service",
+    "grant_types": [
+      "client_credentials"
+    ],
+    "token_endpoint_auth_method": "private_key_jwt",
+    "access_token_format": "jwt",
+    "allowed_audiences": [
+      "urn:musttip:notification-service"
+    ],
+    "rotate_refresh_tokens": true,
+    "detect_refresh_token_reuse": true
+  }
+}

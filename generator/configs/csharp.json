@@ -1,0 +1,12 @@
+{
+  "generatorName": "csharp",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "packageName": "MustTip.Notifications",
+    "packageVersion": "1.0.0",
+    "targetFramework": "net8.0"
+  }
+}

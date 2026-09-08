@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "musttip-notifications"
-version = "1.0.0"
+version = "1.1.0"
 description = "Reference transport SDK for the Must Tip external notification API"
 requires-python = ">=3.10"
 license = {text = "Proprietary"}

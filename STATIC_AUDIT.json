@@ -1,58 +1,16 @@
 {
   "artifact": "musttip-notification-sdk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "contract": {
-    "rest_operations": 42,
+    "rest_operations": 53,
     "realtime_client_events": 35,
     "rest_base_path": "/api/v1/external/notifications/",
-    "realtime_routes": {
-      "internal_recipient": {
-        "path": "/ws/v1/notifications/",
-        "subprotocol": "musttip.notifications.v1"
-      },
-      "external_developer": {
-        "path": "/ws/v1/external/notifications/",
-        "subprotocol": "musttip.external-notifications.v1"
-      },
-      "external_recipient": {
-        "path": "/ws/v1/external/notifications/recipient/",
-        "subprotocol": "musttip.external-notification-recipient.v1",
-        "ticket_subprotocol_prefix": "musttip.notification-ticket."
-      }
-    },
-    "oauth_audience": "urn:musttip:notification-service"
-  },
-  "language_support": {
-    "generator_profiles": [
-      "csharp",
-      "dart-dio",
-      "go",
-      "java",
-      "kotlin",
-      "php",
-      "python",
-      "ruby",
-      "rust",
-      "swift5",
-      "typescript-fetch"
-    ],
-    "generator_profile_count": 11,
-    "reference_clients": [
-      "python",
-      "typescript"
-    ],
-    "example_directories": [
-      "csharp",
-      "curl",
-      "go",
-      "java",
-      "kotlin",
-      "php",
-      "python",
-      "ruby",
-      "swift",
-      "typescript"
-    ]
+    "oauth_audience": "urn:musttip:notification-service",
+    "oauth_scope_count": 21,
+    "supports_application_scoped_crud": true,
+    "supports_user_owned_crud": true,
+    "supports_notification_groups": true,
+    "supports_owned_delete": true
   },
   "architecture": {
     "notification_models_created": 0,
@@ -60,41 +18,35 @@
     "provider_adapters_created": 0,
     "kafka_or_nats_clients_created": 0,
     "django_dependency_in_reference_clients": false,
-    "server_orm_dependency_in_reference_clients": false
+    "server_orm_dependency_in_reference_clients": false,
+    "tenant_authority_in_sdk_config": false
   },
   "security": {
-    "strict_bearer_validation": true,
-    "bounded_json": true,
+    "tenant_authority_override_blocked": true,
+    "protected_security_headers": true,
+    "application_targeting_path_scoped": true,
+    "scoped_application_client": true,
+    "scoped_user_client": true,
+    "https_required_outside_loopback": true,
+    "nonlocal_tls_verification_disable_blocked_python": true,
+    "redirects_rejected_reference_clients": true,
+    "bounded_request_json": true,
+    "bounded_response_json": true,
     "duplicate_json_key_rejection": true,
     "non_finite_number_rejection": true,
     "prototype_pollution_key_rejection": true,
     "mutation_idempotency_catalogued": true,
-    "optimistic_concurrency_supported": true,
-    "retry_after_supported": true,
-    "event_hmac_sha256_supported": true,
-    "public_identifier_contract": true,
-    "client_tenant_authority_fields_excluded": true
+    "unexpected_success_status_rejected": true,
+    "event_hmac_sha256_supported": true
   },
   "verification": {
-    "pytest_passed": 14,
+    "pytest_passed": 22,
     "pytest_failed": 0,
+    "contract_operations_validated": 53,
     "typescript_build_passed": true,
-    "typescript_runtime_conformance_passed": true,
+    "typescript_runtime_security_passed": true,
     "python_wheel_built_and_installed": true,
     "typescript_tarball_built": true,
-    "compiled_or_linted_examples": [
-      "python",
-      "typescript",
-      "go",
-      "java",
-      "php",
-      "ruby",
-      "kotlin",
-      "swift",
-      "shell"
-    ],
-    "csharp_compile_status": "not run: dotnet unavailable",
-    "openapi_generator_status": "not run: openapi-generator-cli unavailable",
     "live_service_integration_status": "not run"
   }
 }

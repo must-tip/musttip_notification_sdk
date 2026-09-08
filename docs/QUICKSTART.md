@@ -1,87 +1,65 @@
 # Quickstart
 
-## 1. Obtain a service access token
+Use an access token issued by the Must Tip authentication system for audience `urn:musttip:notification-service`. The SDK does not accept a tenant ID; tenant ownership is derived by the notification service from the verified token.
 
-The developer backend should use OAuth 2.0 `client_credentials` against the existing authentication service. Request the notification audience and the minimum scopes required by the application.
+## Python
 
-```text
-audience: urn:musttip:notification-service
-scopes:   notifications.send notifications.read notifications.receipts.read
+```python
+from musttip_notifications import NotificationsClient, SdkConfig
+
+client = NotificationsClient(
+    SdkConfig(
+        base_url="https://api.must-tip.com/api/v1/external/notifications",
+        access_token=lambda: obtain_notification_access_token(),
+    )
+)
+
+client.create_user_notification(
+    "commerce-app",
+    "customer-123",
+    {
+        "notification_type": "order.shipped",
+        "title": "Order shipped",
+        "body": "Your order is on the way.",
+    },
+    idempotency_key="order-8472-shipped-v1",
+)
+
+client.list_user_notifications("commerce-app", "customer-123")
+client.list_group_notifications("ecommerce")
 ```
 
-Do not embed client secrets or notification-management access tokens in browser or mobile applications.
+Delete only through an ownership-bound route when possible:
 
-## 2. Create a notification
-
-```http
-POST /api/v1/external/notifications/notifications/
-Authorization: Bearer <short-lived-access-token>
-Content-Type: application/json
-Accept: application/json
-Idempotency-Key: order-4738-shipped-v1
-
-{
-  "recipient_identifier": "customer-9834",
-  "notification_type": "order.shipped",
-  "title": "Your order has shipped",
-  "message": "Order 4738 is on its way.",
-  "channels": ["in_app", "push", "email"],
-  "template_key": "order-shipped",
-  "locale": "en-GB",
-  "metadata": {
-    "order_number": "4738"
-  }
-}
+```python
+client.delete_user_notification(
+    "commerce-app",
+    "customer-123",
+    notification_public_id,
+    idempotency_key=f"delete-{notification_public_id}",
+)
 ```
 
-The server derives `tenant_id`, `application_id`, client identity and source identity from the verified token. Never send or trust those fields from application payloads.
+## TypeScript
 
-## 3. Read status
+```ts
+import { NotificationsClient } from "@musttip/notifications-core";
 
-Use the returned public UUID:
+const client = new NotificationsClient({
+  baseUrl: "https://api.must-tip.com/api/v1/external/notifications",
+  accessToken: async () => obtainNotificationAccessToken(),
+});
 
-```http
-GET /api/v1/external/notifications/notifications/{public_id}/
-Authorization: Bearer <access-token>
-Accept: application/json
+await client.createUserNotification(
+  "commerce-app",
+  "customer-123",
+  {
+    notification_type: "order.shipped",
+    title: "Order shipped",
+    body: "Your order is on the way.",
+  },
+  "order-8472-shipped-v1",
+);
 ```
 
-Use attempts and receipts for delivery diagnostics without exposing provider secrets:
-
-```text
-GET notifications/{public_id}/attempts/
-GET notifications/{public_id}/receipts/
-```
-
-## 4. Realtime backend monitoring
-
-Connect to:
-
-```text
-wss://notifications.example.com/ws/v1/external/notifications/
-Subprotocol: musttip.external-notifications.v1
-```
-
-Send:
-
-```json
-{
-  "protocol_version": 1,
-  "event_type": "external.notifications.subscribe",
-  "request_id": "subscription-01",
-  "payload": {
-    "limit": 25
-  }
-}
-```
-
-## 5. Realtime inbox for the developer's end user
-
-The frontend first authenticates to the developer's own backend. The backend then issues a single-use realtime ticket through the REST API. The frontend connects with two subprotocols:
-
-```text
-musttip.external-notification-recipient.v1
-musttip.notification-ticket.<one-time-ticket>
-```
-
-This ticket is recipient-bound and cannot inherit application-wide monitoring or management authority.
+Do not add `tenant_id`, `X-Tenant-ID`, or `X-Application-ID`. The reference clients reject those authority overrides.

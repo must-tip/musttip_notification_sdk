@@ -2,9 +2,8 @@ openapi: 3.1.0
 info:
   title: Must Tip External Notification API
   version: 1.0.0
-  description: Versioned, application-scoped developer API over the existing Must Tip notification domain. Tenant and application
-    ownership are derived from a verified OAuth principal and cannot be supplied by request data. This SDK copy enriches request
-    schemas without changing service semantics.
+  description: Versioned, application-scoped developer API over the existing Must Tip notification domain. Tenant
+    and application ownership are derived from a verified OAuth principal and cannot be supplied by request data.
 servers:
 - url: /api/v1/external/notifications
 security:
@@ -135,6 +134,262 @@ paths:
         '428': *id007
         '429': *id008
         '503': *id009
+  /applications/{application_id}/notifications/:
+    parameters:
+    - name: application_id
+      in: path
+      required: true
+      description: Application namespace within the authenticated tenant. Application principals may target only their own application; tenant-wide principals may target any application in their tenant.
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    get:
+      tags:
+      - Notifications
+      operationId: listApplicationNotifications
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Notifications
+      operationId: createApplicationNotification
+      security:
+      - OAuth2:
+        - notifications.send
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '429': *id008
+        '503': *id009
+  /applications/{application_id}/notifications/{public_id}/:
+    parameters:
+    - name: application_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags:
+      - Notifications
+      operationId: getApplicationNotification
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '429': *id008
+        '503': *id009
+    delete:
+      tags:
+      - Notifications
+      operationId: deleteApplicationNotification
+      security:
+      - OAuth2:
+        - notifications.delete
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      - name: recipient_identifier
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Identifier'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Notification deleted
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '429': *id008
+        '503': *id009
+  /applications/{application_id}/users/{recipient_identifier}/notifications/:
+    parameters:
+    - name: application_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    - name: recipient_identifier
+      in: path
+      required: true
+      description: Tenant-local user identifier that owns the notification feed.
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    get:
+      tags: [Notifications]
+      operationId: listOwnedApplicationNotifications
+      security:
+      - OAuth2: [notifications.read]
+      responses:
+        '200': { $ref: '#/components/responses/StandardRead' }
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '429': *id008
+        '503': *id009
+    post:
+      tags: [Notifications]
+      operationId: createOwnedApplicationNotification
+      security:
+      - OAuth2: [notifications.send]
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationCreate'
+      responses:
+        '200': { $ref: '#/components/responses/AcceptedOrCreated' }
+        '201': { $ref: '#/components/responses/AcceptedOrCreated' }
+        '202': { $ref: '#/components/responses/AcceptedOrCreated' }
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '429': *id008
+        '503': *id009
+  /applications/{application_id}/users/{recipient_identifier}/notifications/{public_id}/:
+    parameters:
+    - name: application_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    - name: recipient_identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags: [Notifications]
+      operationId: getOwnedApplicationNotification
+      security:
+      - OAuth2: [notifications.read]
+      responses:
+        '200': { $ref: '#/components/responses/StandardRead' }
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '429': *id008
+        '503': *id009
+    delete:
+      tags: [Notifications]
+      operationId: deleteOwnedApplicationNotification
+      security:
+      - OAuth2: [notifications.delete]
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200': { $ref: '#/components/responses/AcceptedOrCreated' }
+        '202': { $ref: '#/components/responses/AcceptedOrCreated' }
+        '204':
+          description: Notification deleted
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '429': *id008
+        '503': *id009
+  /groups/{group_name}/notifications/:
+    parameters:
+    - name: group_name
+      in: path
+      required: true
+      description: Validated logical notification group such as account, social, banking, ecommerce, delivery, or a custom lowercase slug.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: '^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$'
+    get:
+      tags:
+      - Notifications
+      operationId: listGroupedNotifications
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Notifications
+      operationId: createGroupedNotification
+      security:
+      - OAuth2:
+        - notifications.send
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '429': *id008
+        '503': *id009
   /notifications/batch/:
     post:
       tags:
@@ -251,6 +506,34 @@ paths:
         '409': *id005
         '412': *id006
         '428': *id007
+        '429': *id008
+        '503': *id009
+    delete:
+      tags:
+      - Notifications
+      operationId: deleteNotification
+      security:
+      - OAuth2:
+        - notifications.delete
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      - name: recipient_identifier
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Identifier'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Notification deleted
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
         '429': *id008
         '503': *id009
   /notifications/{public_id}/cancel/:
@@ -726,11 +1009,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NotificationSettingsUpdate'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -781,11 +1060,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PreferenceScopeWrite'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -823,11 +1098,7 @@ paths:
       - $ref: '#/components/parameters/IdempotencyKey'
       - $ref: '#/components/parameters/IfMatch'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PreferenceScopeWrite'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -903,11 +1174,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateCreate'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -935,11 +1202,7 @@ paths:
       - OAuth2:
         - notifications.templates.read
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplatePreview'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -1009,11 +1272,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateUpdate'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -1070,11 +1329,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BulkMutationCreate'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -1145,11 +1400,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DigestBuild'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -1203,11 +1454,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DigestCommand'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -1237,11 +1484,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RealtimeTicketIssue'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -1271,11 +1514,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RealtimeTicketConsume'
+        $ref: '#/components/requestBodies/GenericObject'
       responses:
         '200':
           $ref: '#/components/responses/AcceptedOrCreated'
@@ -1349,6 +1588,7 @@ components:
             notifications.batch.send: Send bounded batches
             notifications.read: Read application notifications
             notifications.cancel: Cancel notifications
+            notifications.delete: Delete owned notifications
             notifications.retry: Retry notification delivery
             notifications.attempts.read: Read delivery attempts
             notifications.receipts.read: Read receipts
@@ -1603,355 +1843,3 @@ components:
       type: object
       properties:
         detail: {}
-    NotificationSettingsUpdate:
-      type: object
-      additionalProperties: false
-      minProperties: 1
-      properties:
-        disable_all_notifications:
-          type: boolean
-        can_call:
-          type: boolean
-        order_status_updates:
-          type: boolean
-        promotional_offers:
-          type: boolean
-        transaction_alerts:
-          type: boolean
-        security_alerts:
-          type: boolean
-        likes_and_comments:
-          type: boolean
-        friend_requests:
-          type: boolean
-        reminders:
-          type: boolean
-        scheduled_events:
-          type: boolean
-        in_app_notifications:
-          type: boolean
-        websocket_notifications:
-          type: boolean
-        push_notifications:
-          type: boolean
-        email_notifications:
-          type: boolean
-        sms_notifications:
-          type: boolean
-        voice_notifications:
-          type: boolean
-        webhook_notifications:
-          type: boolean
-        banking_notifications:
-          type: boolean
-        blockchain_notifications:
-          type: boolean
-        fraud_and_risk_notifications:
-          type: boolean
-        compliance_notifications:
-          type: boolean
-        service_incident_notifications:
-          type: boolean
-        marketing_notifications:
-          type: boolean
-        social_notifications:
-          type: boolean
-        delivery_notifications:
-          type: boolean
-        sales_notifications:
-          type: boolean
-        todo_notifications:
-          type: boolean
-        transactional_notifications:
-          type: boolean
-        quiet_hours_enabled:
-          type: boolean
-        digest_enabled:
-          type: boolean
-        push_sound_enabled:
-          type: boolean
-        push_badge_enabled:
-          type: boolean
-        push_preview_enabled:
-          type: boolean
-        allow_deep_links:
-          type: boolean
-        expected_version:
-          type: integer
-          minimum: 1
-        expected_etag:
-          type: string
-          maxLength: 128
-        quiet_hours_start:
-          type:
-          - string
-          - 'null'
-          format: time
-        quiet_hours_end:
-          type:
-          - string
-          - 'null'
-          format: time
-        quiet_hours_days:
-          type: array
-          uniqueItems: true
-          maxItems: 7
-          items:
-            type: integer
-            minimum: 0
-            maximum: 6
-        timezone:
-          type: string
-          maxLength: 64
-        locale:
-          type: string
-          maxLength: 35
-        digest_frequency:
-          type: string
-          enum:
-          - immediate
-          - hourly
-          - daily
-          - weekly
-        digest_time:
-          type:
-          - string
-          - 'null'
-          format: time
-        minimum_priority:
-          type: string
-          maxLength: 16
-        channel_preferences: &id010
-          type: object
-          maxProperties: 256
-          additionalProperties: true
-        category_preferences: *id010
-        channel_fallback_order:
-          type: array
-          uniqueItems: true
-          maxItems: 7
-          items: &id011
-            $ref: '#/components/schemas/Channel'
-        max_notifications_per_hour:
-          type: integer
-          minimum: 0
-          maximum: 100000
-        max_notifications_per_day:
-          type: integer
-          minimum: 0
-          maximum: 1000000
-    PreferenceScopeWrite:
-      type: object
-      additionalProperties: false
-      properties:
-        scope_application_id: &id016
-          $ref: '#/components/schemas/Identifier'
-        disable_all_notifications:
-          type:
-          - boolean
-          - 'null'
-        minimum_priority:
-          type: string
-          maxLength: 16
-        channel_preferences: *id010
-        category_preferences: *id010
-        quiet_hours_enabled:
-          type:
-          - boolean
-          - 'null'
-        quiet_hours_start:
-          type:
-          - string
-          - 'null'
-          format: time
-        quiet_hours_end:
-          type:
-          - string
-          - 'null'
-          format: time
-        quiet_hours_days:
-          type: array
-          uniqueItems: true
-          maxItems: 7
-          items:
-            type: integer
-            minimum: 0
-            maximum: 6
-        muted_until:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        expected_version:
-          type: integer
-          minimum: 1
-    TemplateCreate:
-      type: object
-      additionalProperties: false
-      required:
-      - template_key
-      - body_template
-      - channel
-      properties: &id012
-        template_key: &id013
-          type: string
-          minLength: 1
-          maxLength: 128
-        version: &id014
-          type: integer
-          minimum: 1
-        locale: &id015
-          type: string
-          maxLength: 35
-        channel: *id011
-        title_template:
-          type: string
-          maxLength: 500
-        body_template:
-          type: string
-          maxLength: 65536
-        content_template:
-          type: string
-          maxLength: 65536
-        icon:
-          type: string
-          maxLength: 128
-        actions:
-          type: array
-          maxItems: 32
-          items:
-            type: object
-        metadata_defaults: *id010
-        is_active:
-          type: boolean
-    TemplateUpdate:
-      type: object
-      additionalProperties: false
-      minProperties: 1
-      properties: *id012
-    TemplatePreview:
-      type: object
-      additionalProperties: false
-      required:
-      - template_key
-      - channel
-      - context
-      properties:
-        template_key: *id013
-        version: *id014
-        locale: *id015
-        channel: *id011
-        context: *id010
-    BulkMutationCreate:
-      type: object
-      additionalProperties: false
-      required:
-      - operation
-      properties:
-        operation:
-          type: string
-          enum:
-          - mark_all_read
-          - archive_all
-          - delete_all
-        filters:
-          type: object
-          additionalProperties: false
-          properties:
-            feed_name:
-              type: string
-              maxLength: 64
-            notification_type:
-              type: string
-              maxLength: 64
-            category:
-              type: string
-              maxLength: 64
-    DigestBuild:
-      type: object
-      additionalProperties: false
-      required:
-      - command
-      - frequency
-      - period_start
-      - period_end
-      - scheduled_for
-      properties:
-        command:
-          type: string
-          const: build
-        frequency:
-          type: string
-          enum:
-          - hourly
-          - daily
-          - weekly
-        period_start:
-          type: string
-          format: date-time
-        period_end:
-          type: string
-          format: date-time
-        scheduled_for:
-          type: string
-          format: date-time
-        channels:
-          type: array
-          uniqueItems: true
-          maxItems: 7
-          items: *id011
-        recipient_identifier: *id016
-    DigestCommand:
-      type: object
-      additionalProperties: false
-      required:
-      - command
-      properties:
-        command:
-          type: string
-          enum:
-          - send
-          - retry
-          - cancel
-        channels:
-          type: array
-          uniqueItems: true
-          maxItems: 7
-          items: *id011
-    RealtimeTicketIssue:
-      type: object
-      additionalProperties: false
-      required:
-      - recipient_identifier
-      - origin
-      properties:
-        recipient_identifier: *id016
-        origin:
-          type: string
-          format: uri
-          maxLength: 500
-        last_sequence:
-          type: integer
-          minimum: 0
-          default: 0
-        ttl_seconds:
-          type: integer
-          minimum: 30
-          maximum: 3600
-    RealtimeTicketConsume:
-      type: object
-      additionalProperties: false
-      required:
-      - token
-      - origin
-      properties:
-        token:
-          type: string
-          writeOnly: true
-          minLength: 20
-          maxLength: 1024
-        origin:
-          type: string
-          format: uri
-          maxLength: 500
-x-source-contract: service-openapi-v1.yaml

@@ -26,7 +26,7 @@
     "application",
     "service"
   ],
-  "tenant_application_scope": "Derived from the verified principal and never request input.",
+  "tenant_application_scope": "tenant_id is derived only from the verified OAuth principal and is never SDK input; application_id is token-bound unless the server-authorized tenant-wide application route is used.",
   "public_identifiers": "UUID public IDs or scoped natural keys only.",
   "sensitive_fields_forbidden": [
     "access_token",
@@ -51,5 +51,26 @@
       "signature-key-id"
     ],
     "minimum_secret_characters": 32
+  },
+  "authority_input_rules": {
+    "tenant_id": "forbidden in SDK configuration, headers, query strings and request bodies",
+    "application_id": "allowed only as the canonical /applications/{application_id}/ path selector; never sent as an authority header/query/body override",
+    "recipient_identifier": "tenant-local recipient selector; ownership is enforced by the notification service",
+    "group_name": "validated logical notification group selector; never changes tenant/application authority"
+  },
+  "transport_controls": {
+    "https_required": "required for non-local hosts",
+    "tls_verification": "cannot be disabled for non-local hosts in the Python reference client",
+    "redirects": "reference clients reject HTTP redirects to avoid bearer-token forwarding",
+    "protected_headers": [
+      "Authorization",
+      "X-Tenant-ID",
+      "X-Application-ID",
+      "Host",
+      "Cookie",
+      "Content-Length",
+      "Idempotency-Key",
+      "If-Match"
+    ]
   }
 }

@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import hmac
+import re
 from typing import Mapping
 
 from .errors import ConfigurationError, ProtocolError
@@ -35,6 +36,8 @@ def verify_event_payload(
         return False
     if not signature or not key_id:
         raise ProtocolError("event signature headers are incomplete")
+    if not re.fullmatch(r"[A-Za-z0-9_-]{43}", signature):
+        raise ProtocolError("event signature is invalid")
     secret = secrets.get(key_id)
     if secret is None:
         raise ProtocolError("event signing key is unknown")

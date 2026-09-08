@@ -1,0 +1,12 @@
+{
+  "generatorName": "rust",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "packageName": "musttip_notifications",
+    "packageVersion": "1.0.0",
+    "library": "reqwest"
+  }
+}

@@ -1,4 +1,4 @@
-from .client import NotificationsClient
+from .client import ApplicationNotificationsClient, NotificationsClient, UserNotificationsClient
 from .config import SdkConfig
 from .errors import (
     ApiError,
@@ -28,6 +28,7 @@ from .signing import sign_event_payload, verify_event_payload
 __all__ = [
     "ApiError",
     "ApiResponse",
+    "ApplicationNotificationsClient",
     "AuthenticationError",
     "AuthorizationError",
     "ConfigurationError",
@@ -44,6 +45,7 @@ __all__ = [
     "SdkConfig",
     "ServiceUnavailableError",
     "TransportError",
+    "UserNotificationsClient",
     "build_request",
     "parse_message",
     "recipient_ticket_subprotocols",

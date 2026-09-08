@@ -1,0 +1,13 @@
+{
+  "generatorName": "kotlin",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "packageName": "com.musttip.notifications",
+    "artifactId": "notifications-sdk",
+    "artifactVersion": "1.0.0",
+    "library": "jvm-ktor"
+  }
+}

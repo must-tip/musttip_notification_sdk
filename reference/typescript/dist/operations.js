@@ -1,338 +1,373 @@
 export const OPERATIONS = {
     "addNotificationAttachmentReference": {
-        "method": "POST",
-        "path": "/notifications/{public_id}/attachments/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.attachments.write"
-        ]
+        method: "POST",
+        path: "/notifications/{public_id}/attachments/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.attachments.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "buildDigest": {
-        "method": "POST",
-        "path": "/digests/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.digests.write"
-        ]
+        method: "POST",
+        path: "/digests/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.digests.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "cancelNotification": {
-        "method": "POST",
-        "path": "/notifications/{public_id}/cancel/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.cancel"
-        ]
+        method: "POST",
+        path: "/notifications/{public_id}/cancel/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.cancel"],
+        successStatuses: [200, 201, 202, 204],
     },
     "commandDigest": {
-        "method": "POST",
-        "path": "/digests/{public_id}/command/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.digests.write"
-        ]
+        method: "POST",
+        path: "/digests/{public_id}/command/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.digests.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "consumeRealtimeTicket": {
-        "method": "POST",
-        "path": "/realtime/tickets/consume/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.realtime"
-        ]
+        method: "POST",
+        path: "/realtime/tickets/consume/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.realtime"],
+        successStatuses: [200, 201, 202, 204],
+    },
+    "createApplicationNotification": {
+        method: "POST",
+        path: "/applications/{application_id}/notifications/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.send"],
+        successStatuses: [200, 201, 202],
     },
     "createBulkMutation": {
-        "method": "POST",
-        "path": "/bulk-mutations/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.send"
-        ]
+        method: "POST",
+        path: "/bulk-mutations/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.send"],
+        successStatuses: [200, 201, 202, 204],
+    },
+    "createGroupedNotification": {
+        method: "POST",
+        path: "/groups/{group_name}/notifications/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.send"],
+        successStatuses: [200, 201, 202],
     },
     "createNotification": {
-        "method": "POST",
-        "path": "/notifications/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.send"
-        ]
+        method: "POST",
+        path: "/notifications/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.send"],
+        successStatuses: [200, 201, 202, 204],
     },
     "createNotificationBatch": {
-        "method": "POST",
-        "path": "/notifications/batch/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.batch.send"
-        ]
+        method: "POST",
+        path: "/notifications/batch/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.batch.send"],
+        successStatuses: [200, 201, 202, 204],
+    },
+    "createOwnedApplicationNotification": {
+        method: "POST",
+        path: "/applications/{application_id}/users/{recipient_identifier}/notifications/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.send"],
+        successStatuses: [200, 201, 202],
     },
     "createRecipientPreferenceScope": {
-        "method": "POST",
-        "path": "/recipients/{recipient_identifier}/preference-scopes/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.preferences.write"
-        ]
+        method: "POST",
+        path: "/recipients/{recipient_identifier}/preference-scopes/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.preferences.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "createTemplate": {
-        "method": "POST",
-        "path": "/templates/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.templates.write"
-        ]
+        method: "POST",
+        path: "/templates/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.templates.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "deactivateTemplate": {
-        "method": "DELETE",
-        "path": "/templates/{template_key}/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.templates.write"
-        ]
+        method: "DELETE",
+        path: "/templates/{template_key}/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.templates.write"],
+        successStatuses: [200, 201, 202, 204],
+    },
+    "deleteApplicationNotification": {
+        method: "DELETE",
+        path: "/applications/{application_id}/notifications/{public_id}/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.delete"],
+        successStatuses: [200, 202, 204],
+    },
+    "deleteNotification": {
+        method: "DELETE",
+        path: "/notifications/{public_id}/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.delete"],
+        successStatuses: [200, 202, 204],
     },
     "deleteNotificationAttachment": {
-        "method": "DELETE",
-        "path": "/notifications/{public_id}/attachments/{attachment_id}/command/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.attachments.write"
-        ]
+        method: "DELETE",
+        path: "/notifications/{public_id}/attachments/{attachment_id}/command/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.attachments.write"],
+        successStatuses: [200, 201, 202, 204],
+    },
+    "deleteOwnedApplicationNotification": {
+        method: "DELETE",
+        path: "/applications/{application_id}/users/{recipient_identifier}/notifications/{public_id}/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.delete"],
+        successStatuses: [200, 202, 204],
     },
     "deleteRecipientPreferenceScope": {
-        "method": "DELETE",
-        "path": "/recipients/{recipient_identifier}/preference-scopes/{scope_application_id}/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.preferences.write"
-        ]
+        method: "DELETE",
+        path: "/recipients/{recipient_identifier}/preference-scopes/{scope_application_id}/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.preferences.write"],
+        successStatuses: [200, 201, 202, 204],
+    },
+    "getApplicationNotification": {
+        method: "GET",
+        path: "/applications/{application_id}/notifications/{public_id}/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "getBulkMutation": {
-        "method": "GET",
-        "path": "/bulk-mutations/{public_id}/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.read"
-        ]
+        method: "GET",
+        path: "/bulk-mutations/{public_id}/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "getDigest": {
-        "method": "GET",
-        "path": "/digests/{public_id}/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.digests.read"
-        ]
+        method: "GET",
+        path: "/digests/{public_id}/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.digests.read"],
+        successStatuses: [200],
     },
     "getExternalNotificationCapabilities": {
-        "method": "GET",
-        "path": "/capabilities/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.read"
-        ]
+        method: "GET",
+        path: "/capabilities/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "getNotification": {
-        "method": "GET",
-        "path": "/notifications/{public_id}/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.read"
-        ]
+        method: "GET",
+        path: "/notifications/{public_id}/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "getNotificationSummary": {
-        "method": "GET",
-        "path": "/notifications/summary/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.read"
-        ]
+        method: "GET",
+        path: "/notifications/summary/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
+    },
+    "getOwnedApplicationNotification": {
+        method: "GET",
+        path: "/applications/{application_id}/users/{recipient_identifier}/notifications/{public_id}/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "getRecipientPreferences": {
-        "method": "GET",
-        "path": "/recipients/{recipient_identifier}/preferences/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.preferences.read"
-        ]
+        method: "GET",
+        path: "/recipients/{recipient_identifier}/preferences/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.preferences.read"],
+        successStatuses: [200],
     },
     "getTemplate": {
-        "method": "GET",
-        "path": "/templates/{template_key}/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.templates.read"
-        ]
+        method: "GET",
+        path: "/templates/{template_key}/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.templates.read"],
+        successStatuses: [200],
     },
     "getUsageSummary": {
-        "method": "GET",
-        "path": "/usage/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.usage.read"
-        ]
+        method: "GET",
+        path: "/usage/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.usage.read"],
+        successStatuses: [200],
     },
     "issueRealtimeTicket": {
-        "method": "POST",
-        "path": "/realtime/tickets/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.realtime"
-        ]
+        method: "POST",
+        path: "/realtime/tickets/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.realtime"],
+        successStatuses: [200, 201, 202, 204],
+    },
+    "listApplicationNotifications": {
+        method: "GET",
+        path: "/applications/{application_id}/notifications/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "listDigests": {
-        "method": "GET",
-        "path": "/digests/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.digests.read"
-        ]
+        method: "GET",
+        path: "/digests/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.digests.read"],
+        successStatuses: [200],
+    },
+    "listGroupedNotifications": {
+        method: "GET",
+        path: "/groups/{group_name}/notifications/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "listNotificationAttachments": {
-        "method": "GET",
-        "path": "/notifications/{public_id}/attachments/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.read"
-        ]
+        method: "GET",
+        path: "/notifications/{public_id}/attachments/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "listNotificationAttempts": {
-        "method": "GET",
-        "path": "/notifications/{public_id}/attempts/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.attempts.read"
-        ]
+        method: "GET",
+        path: "/notifications/{public_id}/attempts/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.attempts.read"],
+        successStatuses: [200],
     },
     "listNotificationInteractions": {
-        "method": "GET",
-        "path": "/notifications/{public_id}/interactions/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.read"
-        ]
+        method: "GET",
+        path: "/notifications/{public_id}/interactions/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "listNotificationReceipts": {
-        "method": "GET",
-        "path": "/notifications/{public_id}/receipts/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.receipts.read"
-        ]
+        method: "GET",
+        path: "/notifications/{public_id}/receipts/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.receipts.read"],
+        successStatuses: [200],
     },
     "listNotifications": {
-        "method": "GET",
-        "path": "/notifications/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.read"
-        ]
+        method: "GET",
+        path: "/notifications/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
+    },
+    "listOwnedApplicationNotifications": {
+        method: "GET",
+        path: "/applications/{application_id}/users/{recipient_identifier}/notifications/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "listPushTokens": {
-        "method": "GET",
-        "path": "/push-tokens/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.tokens.write"
-        ]
+        method: "GET",
+        path: "/push-tokens/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.tokens.write"],
+        successStatuses: [200],
     },
     "listRecipientPreferenceScopes": {
-        "method": "GET",
-        "path": "/recipients/{recipient_identifier}/preference-scopes/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.preferences.read"
-        ]
+        method: "GET",
+        path: "/recipients/{recipient_identifier}/preference-scopes/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.preferences.read"],
+        successStatuses: [200],
     },
     "listTemplates": {
-        "method": "GET",
-        "path": "/templates/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.templates.read"
-        ]
+        method: "GET",
+        path: "/templates/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.templates.read"],
+        successStatuses: [200],
     },
     "previewTemplate": {
-        "method": "POST",
-        "path": "/templates/preview/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.templates.read"
-        ]
+        method: "POST",
+        path: "/templates/preview/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.templates.read"],
+        successStatuses: [200, 201, 202, 204],
     },
     "recordNotificationInteraction": {
-        "method": "POST",
-        "path": "/notifications/{public_id}/interactions/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.events.write"
-        ]
+        method: "POST",
+        path: "/notifications/{public_id}/interactions/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.events.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "registerPushToken": {
-        "method": "POST",
-        "path": "/push-tokens/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.tokens.write"
-        ]
+        method: "POST",
+        path: "/push-tokens/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.tokens.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "retryNotification": {
-        "method": "POST",
-        "path": "/notifications/{public_id}/retry/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.retry"
-        ]
+        method: "POST",
+        path: "/notifications/{public_id}/retry/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.retry"],
+        successStatuses: [200, 201, 202, 204],
     },
     "revokePushToken": {
-        "method": "POST",
-        "path": "/push-tokens/revoke/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.tokens.write"
-        ]
+        method: "POST",
+        path: "/push-tokens/revoke/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.tokens.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "rotatePushToken": {
-        "method": "POST",
-        "path": "/push-tokens/rotate/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.tokens.write"
-        ]
+        method: "POST",
+        path: "/push-tokens/rotate/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.tokens.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "scanNotificationAttachment": {
-        "method": "POST",
-        "path": "/notifications/{public_id}/attachments/{attachment_id}/command/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.attachments.write"
-        ]
+        method: "POST",
+        path: "/notifications/{public_id}/attachments/{attachment_id}/command/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.attachments.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "syncNotifications": {
-        "method": "GET",
-        "path": "/notifications/sync/",
-        "idempotencyRequired": false,
-        "requiredScopes": [
-            "notifications.read"
-        ]
+        method: "GET",
+        path: "/notifications/sync/",
+        idempotencyRequired: false,
+        requiredScopes: ["notifications.read"],
+        successStatuses: [200],
     },
     "updateRecipientPreferenceScope": {
-        "method": "PATCH",
-        "path": "/recipients/{recipient_identifier}/preference-scopes/{scope_application_id}/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.preferences.write"
-        ]
+        method: "PATCH",
+        path: "/recipients/{recipient_identifier}/preference-scopes/{scope_application_id}/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.preferences.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "updateRecipientPreferences": {
-        "method": "PATCH",
-        "path": "/recipients/{recipient_identifier}/preferences/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.preferences.write"
-        ]
+        method: "PATCH",
+        path: "/recipients/{recipient_identifier}/preferences/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.preferences.write"],
+        successStatuses: [200, 201, 202, 204],
     },
     "updateTemplate": {
-        "method": "PATCH",
-        "path": "/templates/{template_key}/",
-        "idempotencyRequired": true,
-        "requiredScopes": [
-            "notifications.templates.write"
-        ]
-    }
+        method: "PATCH",
+        path: "/templates/{template_key}/",
+        idempotencyRequired: true,
+        requiredScopes: ["notifications.templates.write"],
+        successStatuses: [200, 201, 202, 204],
+    },
 };

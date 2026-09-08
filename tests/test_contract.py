@@ -42,7 +42,7 @@ def test_rest_contract_is_versioned_and_complete() -> None:
         for method, operation in path_item.items():
             if method.lower() in {"get", "post", "put", "patch", "delete"}:
                 operation_ids.append(operation["operationId"])
-    assert len(operation_ids) == 42
+    assert len(operation_ids) == 53
     assert len(operation_ids) == len(set(operation_ids))
     assert set(operation_ids) == set(OPERATIONS)
 
@@ -65,12 +65,16 @@ def test_realtime_routes_and_subprotocols_are_versioned() -> None:
     assert EXTERNAL_RECIPIENT.subprotocol.endswith(".v1")
 
 
-def test_operation_catalog_has_no_tenant_authority_parameters() -> None:
+def test_operation_catalog_never_exposes_tenant_authority() -> None:
     raw = json.loads((ROOT / "contract/operations.json").read_text())
     for operation in raw["operations"]:
         names = {p["name"] for p in operation["path_parameters"] + operation["query_parameters"]}
         assert "tenant_id" not in names
-        assert "application_id" not in names
+        assert "tenant" not in names
+        if "application_id" in names:
+            assert operation["path"].startswith("/applications/{application_id}/")
+            assert any(p["name"] == "application_id" for p in operation["path_parameters"])
+            assert all(p["name"] != "application_id" for p in operation["query_parameters"])
 
 
 def test_event_signature_vector_matches_reference() -> None:
@@ -171,3 +175,52 @@ def test_json_schema_fixtures_validate() -> None:
     request = json.loads((ROOT / "conformance/fixtures/valid-realtime-request.json").read_text())
     jsonschema.Draft202012Validator(event_schema).validate(event)
     jsonschema.Draft202012Validator(request_schema).validate(request)
+
+
+def test_machine_readable_contract_files_are_valid() -> None:
+    json_files = [
+        ROOT / "sdk-manifest.json",
+        ROOT / "contract/operations.json",
+        ROOT / "contract/scopes.json",
+        ROOT / "contract/security-profile.json",
+        ROOT / "contract/error-codes.json",
+        ROOT / "contract/retry-policy.json",
+    ]
+    for path in json_files:
+        assert isinstance(json.loads(path.read_text(encoding="utf-8")), dict), path
+    assert isinstance(yaml.safe_load((ROOT / "specs/openapi-v1.yaml").read_text(encoding="utf-8")), dict)
+    assert isinstance(yaml.safe_load((ROOT / "specs/asyncapi-v1.yaml").read_text(encoding="utf-8")), dict)
+
+
+def test_delete_and_scoped_notification_operations_are_present() -> None:
+    required = {
+        "deleteNotification",
+        "listApplicationNotifications",
+        "createApplicationNotification",
+        "getApplicationNotification",
+        "deleteApplicationNotification",
+        "listOwnedApplicationNotifications",
+        "createOwnedApplicationNotification",
+        "getOwnedApplicationNotification",
+        "deleteOwnedApplicationNotification",
+        "listGroupedNotifications",
+        "createGroupedNotification",
+    }
+    assert required <= set(OPERATIONS)
+    assert OPERATIONS["deleteNotification"].required_scopes == ("notifications.delete",)
+
+
+def test_resource_server_manifest_matches_sdk_scope_catalogue() -> None:
+    resource = json.loads((ROOT / "contract/resource-server.json").read_text(encoding="utf-8"))
+    scopes = json.loads((ROOT / "contract/scopes.json").read_text(encoding="utf-8"))
+    assert resource["resource_server"]["identifier"] == scopes["audience"]
+    assert set(resource["scopes"]) == {item["name"] for item in scopes["scopes"]}
+    assert resource["recommended_service_profile"]["grant_types"] == ["client_credentials"]
+    assert resource["recommended_service_profile"]["token_endpoint_auth_method"] == "private_key_jwt"
+
+
+def test_sdk_manifest_has_no_trailing_non_json_content() -> None:
+    raw = (ROOT / "sdk-manifest.json").read_text(encoding="utf-8")
+    decoder = json.JSONDecoder()
+    _, offset = decoder.raw_decode(raw)
+    assert raw[offset:].strip() == ""

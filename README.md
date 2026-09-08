@@ -6,7 +6,7 @@ The SDK does **not** recreate notification models, delivery tasks, provider adap
 
 ## What is included
 
-- Canonical OpenAPI 3.1 REST contract with 42 operations.
+- Canonical OpenAPI 3.1 REST contract with 53 operations, including application-scoped, user-owned, grouped and delete routes.
 - Canonical AsyncAPI 3.0 realtime contract for internal, developer-monitoring and external-recipient streams.
 - Portable JSON Schemas and machine-readable operation, scope, error, retry and security catalogues.
 - OpenAPI Generator profiles for Python, TypeScript, Go, Java, C#, PHP, Ruby, Kotlin, Swift, Rust and Dart.
@@ -23,7 +23,7 @@ Developer realtime:       /ws/v1/external/notifications/
 Developer-recipient feed: /ws/v1/external/notifications/recipient/
 ```
 
-Never use an unversioned alias. Tenant and application ownership are derived from the verified OAuth principal, not request fields.
+Never use an unversioned alias. Tenant ownership is derived only from the verified OAuth principal. Application targeting is token-bound or uses the canonical server-authorized `/applications/{application_id}/...` routes; it is never accepted through authority headers, query parameters, or request-body overrides.
 
 ## Fastest integration
 
@@ -48,3 +48,21 @@ See `docs/QUICKSTART.md` and `docs/BACKEND_INTEGRATION.md`.
 ## Compatibility
 
 Version `1.x` permits additive optional fields and new endpoints that preserve existing meaning. Breaking changes require a new REST path and realtime subprotocol version.
+
+### Reproducible SDK and backend verification
+
+From the parent `repo-notification-service` directory:
+
+```bash
+.venv/bin/pip install -r must-tip-notification-servic-backend/requirements-dev.txt -r musttip_notification_sdk/requirements-dev.txt
+npm --prefix musttip_notification_sdk/reference/typescript ci --ignore-scripts
+.venv/bin/pytest -q
+bash musttip_notification_sdk/scripts/check.sh
+```
+
+The parent pytest configuration collects both projects. The SDK integration test
+connects over loopback HTTP to Django, checks authenticated capabilities and
+invalid-token rejection, and checks all 53 operation routes. Its OAuth verifier
+and policy authorizer use controlled fixtures; this does not validate a deployed
+identity provider, task handler, broker, or provider delivery. See
+`TEST_EXECUTION.md` for current results and deployment prerequisites.

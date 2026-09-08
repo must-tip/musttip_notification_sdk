@@ -13,3 +13,5 @@ env/
 htmlcov/
 node_modules/
 *.log
+
+reference/python/build/

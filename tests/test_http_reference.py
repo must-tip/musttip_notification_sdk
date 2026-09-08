@@ -68,3 +68,51 @@ def test_idempotent_mutation_retries_with_same_key() -> None:
     finally:
         server.shutdown()
         server.server_close()
+
+
+def test_sdk_rejects_tenant_authority_overrides_and_protected_headers() -> None:
+    from musttip_notifications import ConfigurationError, ProtocolError
+
+    with __import__("pytest").raises(ConfigurationError):
+        SdkConfig(
+            base_url="https://notifications.example.test/api/v1/external/notifications",
+            access_token="token",
+            default_headers={"X-Tenant-ID": "forged-tenant"},
+        )
+
+    client = NotificationsClient(SdkConfig(
+        base_url="http://127.0.0.1:8000/api/v1/external/notifications",
+        access_token="token",
+    ))
+    with __import__("pytest").raises(ProtocolError):
+        client.call_operation("listNotifications", query={"tenant_id": "forged"})
+    with __import__("pytest").raises(ProtocolError):
+        client.call_operation("createNotification", body={"tenant_id": "forged"}, idempotency_key="safe-key")
+    with __import__("pytest").raises(ConfigurationError):
+        client.call_operation("listNotifications", headers={"Authorization": "Bearer forged"})
+
+
+def test_tls_verification_cannot_be_disabled_for_remote_hosts() -> None:
+    from musttip_notifications import ConfigurationError
+    import pytest
+
+    with pytest.raises(ConfigurationError):
+        SdkConfig(base_url="https://notifications.example.test", access_token="token", verify_tls=False)
+
+
+def test_group_slug_validation_is_fail_closed() -> None:
+    from musttip_notifications import ProtocolError
+    import pytest
+
+    client = NotificationsClient(SdkConfig(base_url="http://127.0.0.1:8000", access_token="token"))
+    with pytest.raises(ProtocolError):
+        client.list_group_notifications("../banking")
+
+
+def test_scoped_clients_pin_application_and_recipient() -> None:
+    client = NotificationsClient(SdkConfig(base_url="http://127.0.0.1:8000", access_token="token"))
+    application = client.for_application("commerce-app")
+    user = application.for_user("customer-123")
+    assert application.application_id == "commerce-app"
+    assert user.application_id == "commerce-app"
+    assert user.recipient_identifier == "customer-123"

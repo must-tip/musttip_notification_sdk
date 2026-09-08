@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol_version",
+    "event_type",
+    "request_id",
+    "payload"
+  ],
+  "properties": {
+    "protocol_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "event_type": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "request_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "idempotency_key": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "trace_id": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "correlation_id": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.musttip.example/notifications/realtime-request-v1.json"
+}

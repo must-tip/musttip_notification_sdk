@@ -1,0 +1,24 @@
+{
+  "http": {
+    "400": "Malformed request or validation failure.",
+    "401": "Missing, invalid, expired or revoked credential.",
+    "403": "Credential is valid but lacks scope or resource authority.",
+    "404": "Resource does not exist in the authenticated scope.",
+    "409": "Idempotency or state conflict.",
+    "412": "Optimistic concurrency precondition failed.",
+    "428": "Required idempotency or precondition header is missing.",
+    "429": "Rate or quota limit exceeded.",
+    "503": "A required dependency or task boundary is unavailable."
+  },
+  "realtime": {
+    "invalid_json": "Frame is not valid bounded JSON.",
+    "unsupported_protocol_version": "Client and server protocol versions differ.",
+    "authentication_required": "A verified principal or one-time ticket is required.",
+    "forbidden": "The principal lacks the required scope or resource authority.",
+    "rate_limited": "Connection or message rate exceeded.",
+    "idempotency_required": "Mutation is missing an idempotency key.",
+    "version_conflict": "Expected notification version is stale.",
+    "response_too_large": "Request a smaller page or narrower projection.",
+    "internal_error": "The operation failed without exposing internal details."
+  }
+}

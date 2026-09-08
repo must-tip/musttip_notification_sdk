@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "retryable_http_statuses": [
+    408,
+    425,
+    429,
+    500,
+    502,
+    503,
+    504
+  ],
+  "retryable_methods_without_idempotency_key": [
+    "GET",
+    "HEAD",
+    "OPTIONS"
+  ],
+  "retryable_mutations": "Only when the exact same Idempotency-Key is retained.",
+  "maximum_attempts_default": 4,
+  "base_delay_seconds": 0.25,
+  "maximum_delay_seconds": 30.0,
+  "jitter": "full",
+  "retry_after": "Honour Retry-After seconds or HTTP-date when present.",
+  "never_retry_automatically": [
+    400,
+    401,
+    403,
+    404,
+    409,
+    412,
+    428
+  ]
+}

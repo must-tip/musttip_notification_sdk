@@ -1,0 +1,13 @@
+{
+  "generatorName": "java",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "groupId": "com.musttip",
+    "artifactId": "notifications-sdk",
+    "artifactVersion": "1.0.0",
+    "library": "native"
+  }
+}

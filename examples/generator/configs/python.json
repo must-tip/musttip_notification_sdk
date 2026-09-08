@@ -1,0 +1,12 @@
+{
+  "generatorName": "python",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "packageName": "musttip_notifications",
+    "projectName": "musttip-notifications-sdk",
+    "packageVersion": "1.0.0"
+  }
+}

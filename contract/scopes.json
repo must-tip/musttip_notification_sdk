@@ -1,0 +1,85 @@
+{
+  "audience": "urn:musttip:notification-service",
+  "scopes": [
+    {
+      "name": "notifications.attachments.write",
+      "description": "Attach, scan and remove media references."
+    },
+    {
+      "name": "notifications.attempts.read",
+      "description": "Read redacted delivery attempts."
+    },
+    {
+      "name": "notifications.batch.send",
+      "description": "Submit bounded notification batches."
+    },
+    {
+      "name": "notifications.cancel",
+      "description": "Cancel eligible notifications."
+    },
+    {
+      "name": "notifications.digests.read",
+      "description": "Read application-owned digest batches."
+    },
+    {
+      "name": "notifications.digests.write",
+      "description": "Build, send, retry or cancel digest batches."
+    },
+    {
+      "name": "notifications.events.write",
+      "description": "Record idempotent recipient interactions."
+    },
+    {
+      "name": "notifications.preferences.read",
+      "description": "Read recipient notification preferences."
+    },
+    {
+      "name": "notifications.preferences.write",
+      "description": "Update recipient and application preference scopes."
+    },
+    {
+      "name": "notifications.read",
+      "description": "Read, list and synchronise application-owned notifications."
+    },
+    {
+      "name": "notifications.realtime",
+      "description": "Issue and consume short-lived realtime tickets."
+    },
+    {
+      "name": "notifications.receipts.read",
+      "description": "Read redacted delivery receipts."
+    },
+    {
+      "name": "notifications.retry",
+      "description": "Request delivery retry through the existing task layer."
+    },
+    {
+      "name": "notifications.send",
+      "description": "Send one notification and create bulk mutations."
+    },
+    {
+      "name": "notifications.templates.read",
+      "description": "Read and preview notification templates."
+    },
+    {
+      "name": "notifications.templates.write",
+      "description": "Create, update and deactivate application templates."
+    },
+    {
+      "name": "notifications.tenant.manage",
+      "description": "Manage across applications in the same tenant when explicitly granted."
+    },
+    {
+      "name": "notifications.tenant.read",
+      "description": "Read across applications in the same tenant when explicitly granted."
+    },
+    {
+      "name": "notifications.tokens.write",
+      "description": "Register, rotate and revoke scoped push tokens."
+    },
+    {
+      "name": "notifications.usage.read",
+      "description": "Read scoped usage aggregates."
+    }
+  ]
+}

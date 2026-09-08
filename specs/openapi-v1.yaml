@@ -1,0 +1,1957 @@
+openapi: 3.1.0
+info:
+  title: Must Tip External Notification API
+  version: 1.0.0
+  description: Versioned, application-scoped developer API over the existing Must Tip notification domain. Tenant and application
+    ownership are derived from a verified OAuth principal and cannot be supplied by request data. This SDK copy enriches request
+    schemas without changing service semantics.
+servers:
+- url: /api/v1/external/notifications
+security:
+- OAuth2: []
+tags:
+- name: Capabilities
+- name: Notifications
+- name: Delivery
+- name: Attachments
+- name: Push tokens
+- name: Preferences
+- name: Templates
+- name: Bulk mutations
+- name: Digests
+- name: Realtime
+- name: Usage
+paths:
+  /capabilities/:
+    get:
+      tags:
+      - Capabilities
+      operationId: getExternalNotificationCapabilities
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': &id001
+          $ref: '#/components/responses/Error'
+        '401': &id002
+          $ref: '#/components/responses/Error'
+        '403': &id003
+          $ref: '#/components/responses/Error'
+        '404': &id004
+          $ref: '#/components/responses/Error'
+        '409': &id005
+          $ref: '#/components/responses/Error'
+        '412': &id006
+          $ref: '#/components/responses/Error'
+        '428': &id007
+          $ref: '#/components/responses/Error'
+        '429': &id008
+          $ref: '#/components/responses/Error'
+        '503': &id009
+          $ref: '#/components/responses/Error'
+  /notifications/:
+    get:
+      tags:
+      - Notifications
+      operationId: listNotifications
+      security:
+      - OAuth2:
+        - notifications.read
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/PageSize'
+      - name: recipient_identifier
+        in: query
+        schema:
+          $ref: '#/components/schemas/Identifier'
+      - name: notification_type
+        in: query
+        schema:
+          type: string
+          maxLength: 64
+      - name: category
+        in: query
+        schema:
+          type: string
+          maxLength: 64
+      - name: delivery_status
+        in: query
+        schema:
+          type: string
+          maxLength: 32
+      - name: unread
+        in: query
+        schema:
+          type: boolean
+      - name: search
+        in: query
+        schema:
+          type: string
+          maxLength: 200
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Notifications
+      operationId: createNotification
+      security:
+      - OAuth2:
+        - notifications.send
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/batch/:
+    post:
+      tags:
+      - Notifications
+      operationId: createNotificationBatch
+      security:
+      - OAuth2:
+        - notifications.batch.send
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - notifications
+              properties:
+                notifications:
+                  type: array
+                  minItems: 1
+                  maxItems: 100
+                  items:
+                    $ref: '#/components/schemas/NotificationCreate'
+                atomic:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/sync/:
+    get:
+      tags:
+      - Notifications
+      operationId: syncNotifications
+      security:
+      - OAuth2:
+        - notifications.read
+      parameters:
+      - name: since_sequence
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/summary/:
+    get:
+      tags:
+      - Notifications
+      operationId: getNotificationSummary
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/{public_id}/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags:
+      - Notifications
+      operationId: getNotification
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/{public_id}/cancel/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    post:
+      tags:
+      - Notifications
+      operationId: cancelNotification
+      security:
+      - OAuth2:
+        - notifications.cancel
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                reason:
+                  type: string
+                  maxLength: 255
+                expected_version:
+                  type: integer
+                  minimum: 0
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/{public_id}/retry/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    post:
+      tags:
+      - Delivery
+      operationId: retryNotification
+      security:
+      - OAuth2:
+        - notifications.retry
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                channels:
+                  type: array
+                  uniqueItems: true
+                  items:
+                    $ref: '#/components/schemas/Channel'
+                reason:
+                  type: string
+                  maxLength: 255
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/{public_id}/attempts/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags:
+      - Delivery
+      operationId: listNotificationAttempts
+      security:
+      - OAuth2:
+        - notifications.attempts.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/{public_id}/receipts/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags:
+      - Delivery
+      operationId: listNotificationReceipts
+      security:
+      - OAuth2:
+        - notifications.receipts.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/{public_id}/interactions/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags:
+      - Delivery
+      operationId: listNotificationInteractions
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Delivery
+      operationId: recordNotificationInteraction
+      security:
+      - OAuth2:
+        - notifications.events.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InteractionCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/{public_id}/attachments/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags:
+      - Attachments
+      operationId: listNotificationAttachments
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Attachments
+      operationId: addNotificationAttachmentReference
+      security:
+      - OAuth2:
+        - notifications.attachments.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttachmentReference'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /notifications/{public_id}/attachments/{attachment_id}/command/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    - name: attachment_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    post:
+      tags:
+      - Attachments
+      operationId: scanNotificationAttachment
+      security:
+      - OAuth2:
+        - notifications.attachments.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    delete:
+      tags:
+      - Attachments
+      operationId: deleteNotificationAttachment
+      security:
+      - OAuth2:
+        - notifications.attachments.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /push-tokens/:
+    get:
+      tags:
+      - Push tokens
+      operationId: listPushTokens
+      security:
+      - OAuth2:
+        - notifications.tokens.write
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Push tokens
+      operationId: registerPushToken
+      security:
+      - OAuth2:
+        - notifications.tokens.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PushTokenRegistration'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /push-tokens/rotate/:
+    post:
+      tags:
+      - Push tokens
+      operationId: rotatePushToken
+      security:
+      - OAuth2:
+        - notifications.tokens.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PushTokenRegistration'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /push-tokens/revoke/:
+    post:
+      tags:
+      - Push tokens
+      operationId: revokePushToken
+      security:
+      - OAuth2:
+        - notifications.tokens.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                public_id:
+                  type: string
+                  format: uuid
+                installation_id:
+                  $ref: '#/components/schemas/Identifier'
+                device_id:
+                  $ref: '#/components/schemas/Identifier'
+                external_id:
+                  $ref: '#/components/schemas/Identifier'
+                reason:
+                  type: string
+                  maxLength: 255
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /recipients/{recipient_identifier}/preferences/:
+    parameters:
+    - $ref: '#/components/parameters/RecipientIdentifier'
+    get:
+      tags:
+      - Preferences
+      operationId: getRecipientPreferences
+      security:
+      - OAuth2:
+        - notifications.preferences.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    patch:
+      tags:
+      - Preferences
+      operationId: updateRecipientPreferences
+      security:
+      - OAuth2:
+        - notifications.preferences.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationSettingsUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /recipients/{recipient_identifier}/preference-scopes/:
+    parameters:
+    - $ref: '#/components/parameters/RecipientIdentifier'
+    get:
+      tags:
+      - Preferences
+      operationId: listRecipientPreferenceScopes
+      security:
+      - OAuth2:
+        - notifications.preferences.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Preferences
+      operationId: createRecipientPreferenceScope
+      security:
+      - OAuth2:
+        - notifications.preferences.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreferenceScopeWrite'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /recipients/{recipient_identifier}/preference-scopes/{scope_application_id}/:
+    parameters:
+    - $ref: '#/components/parameters/RecipientIdentifier'
+    - name: scope_application_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    patch:
+      tags:
+      - Preferences
+      operationId: updateRecipientPreferenceScope
+      security:
+      - OAuth2:
+        - notifications.preferences.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreferenceScopeWrite'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    delete:
+      tags:
+      - Preferences
+      operationId: deleteRecipientPreferenceScope
+      security:
+      - OAuth2:
+        - notifications.preferences.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /templates/:
+    get:
+      tags:
+      - Templates
+      operationId: listTemplates
+      security:
+      - OAuth2:
+        - notifications.templates.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Templates
+      operationId: createTemplate
+      security:
+      - OAuth2:
+        - notifications.templates.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /templates/preview/:
+    post:
+      tags:
+      - Templates
+      operationId: previewTemplate
+      security:
+      - OAuth2:
+        - notifications.templates.read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplatePreview'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /templates/{template_key}/:
+    parameters:
+    - name: template_key
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 128
+    - name: version
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+    - name: locale
+      in: query
+      schema:
+        type: string
+        maxLength: 35
+    - name: channel
+      in: query
+      schema:
+        $ref: '#/components/schemas/Channel'
+    get:
+      tags:
+      - Templates
+      operationId: getTemplate
+      security:
+      - OAuth2:
+        - notifications.templates.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    patch:
+      tags:
+      - Templates
+      operationId: updateTemplate
+      security:
+      - OAuth2:
+        - notifications.templates.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    delete:
+      tags:
+      - Templates
+      operationId: deactivateTemplate
+      security:
+      - OAuth2:
+        - notifications.templates.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /bulk-mutations/:
+    post:
+      tags:
+      - Bulk mutations
+      operationId: createBulkMutation
+      security:
+      - OAuth2:
+        - notifications.send
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkMutationCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /bulk-mutations/{public_id}/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags:
+      - Bulk mutations
+      operationId: getBulkMutation
+      security:
+      - OAuth2:
+        - notifications.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /digests/:
+    get:
+      tags:
+      - Digests
+      operationId: listDigests
+      security:
+      - OAuth2:
+        - notifications.digests.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+    post:
+      tags:
+      - Digests
+      operationId: buildDigest
+      security:
+      - OAuth2:
+        - notifications.digests.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigestBuild'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /digests/{public_id}/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    get:
+      tags:
+      - Digests
+      operationId: getDigest
+      security:
+      - OAuth2:
+        - notifications.digests.read
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /digests/{public_id}/command/:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    post:
+      tags:
+      - Digests
+      operationId: commandDigest
+      security:
+      - OAuth2:
+        - notifications.digests.write
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigestCommand'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /realtime/tickets/:
+    post:
+      tags:
+      - Realtime
+      operationId: issueRealtimeTicket
+      security:
+      - OAuth2:
+        - notifications.realtime
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeTicketIssue'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /realtime/tickets/consume/:
+    post:
+      tags:
+      - Realtime
+      operationId: consumeRealtimeTicket
+      security:
+      - OAuth2:
+        - notifications.realtime
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeTicketConsume'
+      responses:
+        '200':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '201':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '202':
+          $ref: '#/components/responses/AcceptedOrCreated'
+        '204':
+          description: Command completed without a response body
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+  /usage/:
+    get:
+      tags:
+      - Usage
+      operationId: getUsageSummary
+      security:
+      - OAuth2:
+        - notifications.usage.read
+      parameters:
+      - name: start
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: end
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: group_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - hour
+          - day
+          - week
+          - channel
+          - status
+          - notification_type
+          default: day
+      responses:
+        '200':
+          $ref: '#/components/responses/StandardRead'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '412': *id006
+        '428': *id007
+        '429': *id008
+        '503': *id009
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes:
+            notifications.send: Send notifications
+            notifications.batch.send: Send bounded batches
+            notifications.read: Read application notifications
+            notifications.cancel: Cancel notifications
+            notifications.retry: Retry notification delivery
+            notifications.attempts.read: Read delivery attempts
+            notifications.receipts.read: Read receipts
+            notifications.events.write: Record client interactions
+            notifications.attachments.write: Manage attachment references
+            notifications.tokens.write: Manage push tokens
+            notifications.preferences.read: Read preferences
+            notifications.preferences.write: Manage preferences
+            notifications.templates.read: Read templates
+            notifications.templates.write: Manage templates
+            notifications.digests.read: Read digests
+            notifications.digests.write: Manage digests
+            notifications.realtime: Manage realtime tickets
+            notifications.usage.read: Read usage aggregates
+            notifications.tenant.read: Read all applications in a tenant
+            notifications.tenant.manage: Manage all applications in a tenant
+  parameters:
+    NotificationId:
+      name: public_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    RecipientIdentifier:
+      name: recipient_identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    Cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+        maxLength: 1024
+    PageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        pattern: ^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$
+    IfMatch:
+      name: If-Match
+      in: header
+      required: true
+      schema:
+        type: string
+        maxLength: 64
+  requestBodies:
+    GenericObject:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+  responses:
+    StandardRead:
+      description: Scoped resource or collection response
+      content:
+        application/json:
+          schema:
+            type: object
+    AcceptedOrCreated:
+      description: Completed result or asynchronous accepted command
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/AcceptedCommand'
+            - type: object
+    Error:
+      description: Standard error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Identifier:
+      type: string
+      minLength: 1
+      maxLength: 255
+      pattern: ^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,254}$
+    Channel:
+      type: string
+      enum:
+      - in_app
+      - websocket
+      - push
+      - email
+      - sms
+      - voice
+      - webhook
+    NotificationCreate:
+      type: object
+      additionalProperties: false
+      required:
+      - recipient_identifier
+      - notification_type
+      properties:
+        recipient_identifier:
+          $ref: '#/components/schemas/Identifier'
+        notification_type:
+          type: string
+          maxLength: 64
+        title:
+          type: string
+          maxLength: 250
+        message:
+          type: string
+          maxLength: 250
+        content:
+          type: string
+          maxLength: 65536
+        channels:
+          type: array
+          uniqueItems: true
+          maxItems: 7
+          items:
+            $ref: '#/components/schemas/Channel'
+        template_key:
+          type: string
+          maxLength: 128
+        template_version:
+          type: integer
+          minimum: 1
+        locale:
+          type: string
+          maxLength: 35
+        scheduled_for:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+        actions:
+          type: array
+          maxItems: 32
+        idempotency_key:
+          type: string
+          maxLength: 128
+    InteractionCreate:
+      type: object
+      additionalProperties: false
+      required:
+      - actor_identifier
+      - interaction_type
+      properties:
+        actor_identifier:
+          $ref: '#/components/schemas/Identifier'
+        interaction_type:
+          type: string
+          enum:
+          - open
+          - read
+          - dismiss
+          - action
+          - reply
+          - snooze
+          - pin
+          - unpin
+        action_id:
+          type: string
+          maxLength: 64
+        reply_text:
+          type: string
+          maxLength: 4096
+        payload:
+          type: object
+        client_event_id:
+          type: string
+          maxLength: 128
+        occurred_at:
+          type: string
+          format: date-time
+    AttachmentReference:
+      type: object
+      additionalProperties: false
+      required:
+      - media_id
+      - size_bytes
+      properties:
+        media_id:
+          $ref: '#/components/schemas/Identifier'
+        file_name:
+          type: string
+          maxLength: 255
+        content_type:
+          type: string
+          maxLength: 255
+        size_bytes:
+          type: integer
+          minimum: 0
+        checksum_sha256:
+          type: string
+          pattern: ^[A-Fa-f0-9]{64}$
+        alt_text:
+          type: string
+          maxLength: 500
+        metadata:
+          type: object
+    PushTokenRegistration:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      - external_id
+      properties:
+        token:
+          type: string
+          writeOnly: true
+          maxLength: 512
+        external_id:
+          $ref: '#/components/schemas/Identifier'
+        installation_id:
+          $ref: '#/components/schemas/Identifier'
+        device_id:
+          $ref: '#/components/schemas/Identifier'
+        platform:
+          type: string
+        provider:
+          type: string
+        permission_status:
+          type: string
+        metadata:
+          type: object
+    AcceptedCommand:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          const: accepted
+        task_id:
+          type:
+          - string
+          - 'null'
+    Error:
+      type: object
+      properties:
+        detail: {}
+    NotificationSettingsUpdate:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        disable_all_notifications:
+          type: boolean
+        can_call:
+          type: boolean
+        order_status_updates:
+          type: boolean
+        promotional_offers:
+          type: boolean
+        transaction_alerts:
+          type: boolean
+        security_alerts:
+          type: boolean
+        likes_and_comments:
+          type: boolean
+        friend_requests:
+          type: boolean
+        reminders:
+          type: boolean
+        scheduled_events:
+          type: boolean
+        in_app_notifications:
+          type: boolean
+        websocket_notifications:
+          type: boolean
+        push_notifications:
+          type: boolean
+        email_notifications:
+          type: boolean
+        sms_notifications:
+          type: boolean
+        voice_notifications:
+          type: boolean
+        webhook_notifications:
+          type: boolean
+        banking_notifications:
+          type: boolean
+        blockchain_notifications:
+          type: boolean
+        fraud_and_risk_notifications:
+          type: boolean
+        compliance_notifications:
+          type: boolean
+        service_incident_notifications:
+          type: boolean
+        marketing_notifications:
+          type: boolean
+        social_notifications:
+          type: boolean
+        delivery_notifications:
+          type: boolean
+        sales_notifications:
+          type: boolean
+        todo_notifications:
+          type: boolean
+        transactional_notifications:
+          type: boolean
+        quiet_hours_enabled:
+          type: boolean
+        digest_enabled:
+          type: boolean
+        push_sound_enabled:
+          type: boolean
+        push_badge_enabled:
+          type: boolean
+        push_preview_enabled:
+          type: boolean
+        allow_deep_links:
+          type: boolean
+        expected_version:
+          type: integer
+          minimum: 1
+        expected_etag:
+          type: string
+          maxLength: 128
+        quiet_hours_start:
+          type:
+          - string
+          - 'null'
+          format: time
+        quiet_hours_end:
+          type:
+          - string
+          - 'null'
+          format: time
+        quiet_hours_days:
+          type: array
+          uniqueItems: true
+          maxItems: 7
+          items:
+            type: integer
+            minimum: 0
+            maximum: 6
+        timezone:
+          type: string
+          maxLength: 64
+        locale:
+          type: string
+          maxLength: 35
+        digest_frequency:
+          type: string
+          enum:
+          - immediate
+          - hourly
+          - daily
+          - weekly
+        digest_time:
+          type:
+          - string
+          - 'null'
+          format: time
+        minimum_priority:
+          type: string
+          maxLength: 16
+        channel_preferences: &id010
+          type: object
+          maxProperties: 256
+          additionalProperties: true
+        category_preferences: *id010
+        channel_fallback_order:
+          type: array
+          uniqueItems: true
+          maxItems: 7
+          items: &id011
+            $ref: '#/components/schemas/Channel'
+        max_notifications_per_hour:
+          type: integer
+          minimum: 0
+          maximum: 100000
+        max_notifications_per_day:
+          type: integer
+          minimum: 0
+          maximum: 1000000
+    PreferenceScopeWrite:
+      type: object
+      additionalProperties: false
+      properties:
+        scope_application_id: &id016
+          $ref: '#/components/schemas/Identifier'
+        disable_all_notifications:
+          type:
+          - boolean
+          - 'null'
+        minimum_priority:
+          type: string
+          maxLength: 16
+        channel_preferences: *id010
+        category_preferences: *id010
+        quiet_hours_enabled:
+          type:
+          - boolean
+          - 'null'
+        quiet_hours_start:
+          type:
+          - string
+          - 'null'
+          format: time
+        quiet_hours_end:
+          type:
+          - string
+          - 'null'
+          format: time
+        quiet_hours_days:
+          type: array
+          uniqueItems: true
+          maxItems: 7
+          items:
+            type: integer
+            minimum: 0
+            maximum: 6
+        muted_until:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expected_version:
+          type: integer
+          minimum: 1
+    TemplateCreate:
+      type: object
+      additionalProperties: false
+      required:
+      - template_key
+      - body_template
+      - channel
+      properties: &id012
+        template_key: &id013
+          type: string
+          minLength: 1
+          maxLength: 128
+        version: &id014
+          type: integer
+          minimum: 1
+        locale: &id015
+          type: string
+          maxLength: 35
+        channel: *id011
+        title_template:
+          type: string
+          maxLength: 500
+        body_template:
+          type: string
+          maxLength: 65536
+        content_template:
+          type: string
+          maxLength: 65536
+        icon:
+          type: string
+          maxLength: 128
+        actions:
+          type: array
+          maxItems: 32
+          items:
+            type: object
+        metadata_defaults: *id010
+        is_active:
+          type: boolean
+    TemplateUpdate:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties: *id012
+    TemplatePreview:
+      type: object
+      additionalProperties: false
+      required:
+      - template_key
+      - channel
+      - context
+      properties:
+        template_key: *id013
+        version: *id014
+        locale: *id015
+        channel: *id011
+        context: *id010
+    BulkMutationCreate:
+      type: object
+      additionalProperties: false
+      required:
+      - operation
+      properties:
+        operation:
+          type: string
+          enum:
+          - mark_all_read
+          - archive_all
+          - delete_all
+        filters:
+          type: object
+          additionalProperties: false
+          properties:
+            feed_name:
+              type: string
+              maxLength: 64
+            notification_type:
+              type: string
+              maxLength: 64
+            category:
+              type: string
+              maxLength: 64
+    DigestBuild:
+      type: object
+      additionalProperties: false
+      required:
+      - command
+      - frequency
+      - period_start
+      - period_end
+      - scheduled_for
+      properties:
+        command:
+          type: string
+          const: build
+        frequency:
+          type: string
+          enum:
+          - hourly
+          - daily
+          - weekly
+        period_start:
+          type: string
+          format: date-time
+        period_end:
+          type: string
+          format: date-time
+        scheduled_for:
+          type: string
+          format: date-time
+        channels:
+          type: array
+          uniqueItems: true
+          maxItems: 7
+          items: *id011
+        recipient_identifier: *id016
+    DigestCommand:
+      type: object
+      additionalProperties: false
+      required:
+      - command
+      properties:
+        command:
+          type: string
+          enum:
+          - send
+          - retry
+          - cancel
+        channels:
+          type: array
+          uniqueItems: true
+          maxItems: 7
+          items: *id011
+    RealtimeTicketIssue:
+      type: object
+      additionalProperties: false
+      required:
+      - recipient_identifier
+      - origin
+      properties:
+        recipient_identifier: *id016
+        origin:
+          type: string
+          format: uri
+          maxLength: 500
+        last_sequence:
+          type: integer
+          minimum: 0
+          default: 0
+        ttl_seconds:
+          type: integer
+          minimum: 30
+          maximum: 3600
+    RealtimeTicketConsume:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      - origin
+      properties:
+        token:
+          type: string
+          writeOnly: true
+          minLength: 20
+          maxLength: 1024
+        origin:
+          type: string
+          format: uri
+          maxLength: 500
+x-source-contract: service-openapi-v1.yaml

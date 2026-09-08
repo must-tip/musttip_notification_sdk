@@ -1,0 +1,18 @@
+{
+  "event_id": "8bb17dad-4277-4c7d-85b6-835619f5b693",
+  "event_type": "notification.delivered",
+  "schema_version": "v1",
+  "source": "notification-service",
+  "topic": "notification.events.v1",
+  "occurred_at": "2026-07-25T10:00:02Z",
+  "trace_id": "trace-4738",
+  "correlation_id": "order-4738",
+  "causation_id": null,
+  "tenant_id": "tenant-a",
+  "headers": {},
+  "data": {
+    "notification_public_id": "f2fb9a4c-2a87-497c-b87f-8c70accf42b2",
+    "application_id": "app-a",
+    "status": "delivered"
+  }
+}

@@ -1,0 +1,1707 @@
+{
+  "info": {
+    "name": "Must Tip External Notification API v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Generated from the canonical OpenAPI contract. Tenant and application ownership come from the access token."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://notifications.example.com/api/v1/external/notifications"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "public_id",
+      "value": "00000000-0000-4000-8000-000000000000"
+    },
+    {
+      "key": "attachment_id",
+      "value": "00000000-0000-4000-8000-000000000000"
+    },
+    {
+      "key": "recipient_identifier",
+      "value": "customer-123"
+    },
+    {
+      "key": "scope_application_id",
+      "value": "app-123"
+    },
+    {
+      "key": "template_key",
+      "value": "order-shipped"
+    }
+  ],
+  "item": [
+    {
+      "name": "addNotificationAttachmentReference",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/attachments",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "attachments"
+          ]
+        },
+        "description": "Required scopes: notifications.attachments.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "buildDigest",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/digests",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "digests"
+          ]
+        },
+        "description": "Required scopes: notifications.digests.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cancelNotification",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/cancel",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "cancel"
+          ]
+        },
+        "description": "Required scopes: notifications.cancel",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "commandDigest",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/digests/{{public_id}}/command",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "digests",
+            "{{public_id}}",
+            "command"
+          ]
+        },
+        "description": "Required scopes: notifications.digests.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "consumeRealtimeTicket",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/realtime/tickets/consume",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "realtime",
+            "tickets",
+            "consume"
+          ]
+        },
+        "description": "Required scopes: notifications.realtime",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createBulkMutation",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/bulk-mutations",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "bulk-mutations"
+          ]
+        },
+        "description": "Required scopes: notifications.send",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createNotification",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications"
+          ]
+        },
+        "description": "Required scopes: notifications.send",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createNotificationBatch",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/batch",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "batch"
+          ]
+        },
+        "description": "Required scopes: notifications.batch.send",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createRecipientPreferenceScope",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/recipients/{{recipient_identifier}}/preference-scopes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "recipients",
+            "{{recipient_identifier}}",
+            "preference-scopes"
+          ]
+        },
+        "description": "Required scopes: notifications.preferences.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createTemplate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/templates",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "templates"
+          ]
+        },
+        "description": "Required scopes: notifications.templates.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deactivateTemplate",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/templates/{{template_key}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "templates",
+            "{{template_key}}"
+          ]
+        },
+        "description": "Required scopes: notifications.templates.write"
+      },
+      "response": []
+    },
+    {
+      "name": "deleteNotificationAttachment",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/attachments/{{attachment_id}}/command",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "attachments",
+            "{{attachment_id}}",
+            "command"
+          ]
+        },
+        "description": "Required scopes: notifications.attachments.write"
+      },
+      "response": []
+    },
+    {
+      "name": "deleteRecipientPreferenceScope",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/recipients/{{recipient_identifier}}/preference-scopes/{{scope_application_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "recipients",
+            "{{recipient_identifier}}",
+            "preference-scopes",
+            "{{scope_application_id}}"
+          ]
+        },
+        "description": "Required scopes: notifications.preferences.write"
+      },
+      "response": []
+    },
+    {
+      "name": "getBulkMutation",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/bulk-mutations/{{public_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "bulk-mutations",
+            "{{public_id}}"
+          ]
+        },
+        "description": "Required scopes: notifications.read"
+      },
+      "response": []
+    },
+    {
+      "name": "getDigest",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/digests/{{public_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "digests",
+            "{{public_id}}"
+          ]
+        },
+        "description": "Required scopes: notifications.digests.read"
+      },
+      "response": []
+    },
+    {
+      "name": "getExternalNotificationCapabilities",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/capabilities",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "capabilities"
+          ]
+        },
+        "description": "Required scopes: notifications.read"
+      },
+      "response": []
+    },
+    {
+      "name": "getNotification",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}"
+          ]
+        },
+        "description": "Required scopes: notifications.read"
+      },
+      "response": []
+    },
+    {
+      "name": "getNotificationSummary",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/summary",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "summary"
+          ]
+        },
+        "description": "Required scopes: notifications.read"
+      },
+      "response": []
+    },
+    {
+      "name": "getRecipientPreferences",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/recipients/{{recipient_identifier}}/preferences",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "recipients",
+            "{{recipient_identifier}}",
+            "preferences"
+          ]
+        },
+        "description": "Required scopes: notifications.preferences.read"
+      },
+      "response": []
+    },
+    {
+      "name": "getTemplate",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/templates/{{template_key}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "templates",
+            "{{template_key}}"
+          ]
+        },
+        "description": "Required scopes: notifications.templates.read"
+      },
+      "response": []
+    },
+    {
+      "name": "getUsageSummary",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/usage",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "usage"
+          ]
+        },
+        "description": "Required scopes: notifications.usage.read"
+      },
+      "response": []
+    },
+    {
+      "name": "issueRealtimeTicket",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/realtime/tickets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "realtime",
+            "tickets"
+          ]
+        },
+        "description": "Required scopes: notifications.realtime",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "listDigests",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/digests",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "digests"
+          ]
+        },
+        "description": "Required scopes: notifications.digests.read"
+      },
+      "response": []
+    },
+    {
+      "name": "listNotificationAttachments",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/attachments",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "attachments"
+          ]
+        },
+        "description": "Required scopes: notifications.read"
+      },
+      "response": []
+    },
+    {
+      "name": "listNotificationAttempts",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/attempts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "attempts"
+          ]
+        },
+        "description": "Required scopes: notifications.attempts.read"
+      },
+      "response": []
+    },
+    {
+      "name": "listNotificationInteractions",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/interactions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "interactions"
+          ]
+        },
+        "description": "Required scopes: notifications.read"
+      },
+      "response": []
+    },
+    {
+      "name": "listNotificationReceipts",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/receipts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "receipts"
+          ]
+        },
+        "description": "Required scopes: notifications.receipts.read"
+      },
+      "response": []
+    },
+    {
+      "name": "listNotifications",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications"
+          ]
+        },
+        "description": "Required scopes: notifications.read"
+      },
+      "response": []
+    },
+    {
+      "name": "listPushTokens",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/push-tokens",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "push-tokens"
+          ]
+        },
+        "description": "Required scopes: notifications.tokens.write"
+      },
+      "response": []
+    },
+    {
+      "name": "listRecipientPreferenceScopes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/recipients/{{recipient_identifier}}/preference-scopes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "recipients",
+            "{{recipient_identifier}}",
+            "preference-scopes"
+          ]
+        },
+        "description": "Required scopes: notifications.preferences.read"
+      },
+      "response": []
+    },
+    {
+      "name": "listTemplates",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/templates",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "templates"
+          ]
+        },
+        "description": "Required scopes: notifications.templates.read"
+      },
+      "response": []
+    },
+    {
+      "name": "previewTemplate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/templates/preview",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "templates",
+            "preview"
+          ]
+        },
+        "description": "Required scopes: notifications.templates.read",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "recordNotificationInteraction",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/interactions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "interactions"
+          ]
+        },
+        "description": "Required scopes: notifications.events.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "registerPushToken",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/push-tokens",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "push-tokens"
+          ]
+        },
+        "description": "Required scopes: notifications.tokens.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "retryNotification",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/retry",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "retry"
+          ]
+        },
+        "description": "Required scopes: notifications.retry",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "revokePushToken",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/push-tokens/revoke",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "push-tokens",
+            "revoke"
+          ]
+        },
+        "description": "Required scopes: notifications.tokens.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "rotatePushToken",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/push-tokens/rotate",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "push-tokens",
+            "rotate"
+          ]
+        },
+        "description": "Required scopes: notifications.tokens.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "scanNotificationAttachment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{public_id}}/attachments/{{attachment_id}}/command",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{public_id}}",
+            "attachments",
+            "{{attachment_id}}",
+            "command"
+          ]
+        },
+        "description": "Required scopes: notifications.attachments.write"
+      },
+      "response": []
+    },
+    {
+      "name": "syncNotifications",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications/sync",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "sync"
+          ]
+        },
+        "description": "Required scopes: notifications.read"
+      },
+      "response": []
+    },
+    {
+      "name": "updateRecipientPreferenceScope",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/recipients/{{recipient_identifier}}/preference-scopes/{{scope_application_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "recipients",
+            "{{recipient_identifier}}",
+            "preference-scopes",
+            "{{scope_application_id}}"
+          ]
+        },
+        "description": "Required scopes: notifications.preferences.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updateRecipientPreferences",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/recipients/{{recipient_identifier}}/preferences",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "recipients",
+            "{{recipient_identifier}}",
+            "preferences"
+          ]
+        },
+        "description": "Required scopes: notifications.preferences.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updateTemplate",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/templates/{{template_key}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "templates",
+            "{{template_key}}"
+          ]
+        },
+        "description": "Required scopes: notifications.templates.write",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    }
+  ]
+}

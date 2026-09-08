@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "musttip-notifications"
+version = "1.0.0"
+description = "Reference transport SDK for the Must Tip external notification API"
+requires-python = ">=3.10"
+license = {text = "Proprietary"}
+authors = [{name = "Must Tip"}]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[tool.setuptools.package-data]
+musttip_notifications = ["data/*.json", "py.typed"]

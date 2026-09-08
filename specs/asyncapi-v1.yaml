@@ -1,0 +1,181 @@
+asyncapi: 3.0.0
+info:
+  title: Must Tip Notification Realtime API
+  version: 1.0.0
+  description: >-
+    Versioned WebSocket protocol for internal recipients, developer application
+    monitoring, tenant monitoring, and developer end-user recipient inboxes.
+defaultContentType: application/json
+servers:
+  production:
+    host: notifications.example.com
+    protocol: wss
+    pathname: /
+    security:
+      - $ref: '#/components/securitySchemes/verifiedPrincipal'
+channels:
+  internalRecipient:
+    address: /ws/v1/notifications/
+    messages:
+      request:
+        $ref: '#/components/messages/Request'
+      response:
+        $ref: '#/components/messages/Response'
+      event:
+        $ref: '#/components/messages/Event'
+  externalDeveloper:
+    address: /ws/v1/external/notifications/
+    messages:
+      request:
+        $ref: '#/components/messages/Request'
+      response:
+        $ref: '#/components/messages/Response'
+      event:
+        $ref: '#/components/messages/Event'
+  externalRecipient:
+    address: /ws/v1/external/notifications/recipient/
+    messages:
+      request:
+        $ref: '#/components/messages/Request'
+      response:
+        $ref: '#/components/messages/Response'
+      event:
+        $ref: '#/components/messages/Event'
+operations:
+  sendInternalRequest:
+    action: send
+    channel:
+      $ref: '#/channels/internalRecipient'
+    messages:
+      - $ref: '#/channels/internalRecipient/messages/request'
+  receiveInternalEvent:
+    action: receive
+    channel:
+      $ref: '#/channels/internalRecipient'
+    messages:
+      - $ref: '#/channels/internalRecipient/messages/response'
+      - $ref: '#/channels/internalRecipient/messages/event'
+  sendDeveloperRequest:
+    action: send
+    channel:
+      $ref: '#/channels/externalDeveloper'
+    messages:
+      - $ref: '#/channels/externalDeveloper/messages/request'
+  receiveDeveloperEvent:
+    action: receive
+    channel:
+      $ref: '#/channels/externalDeveloper'
+    messages:
+      - $ref: '#/channels/externalDeveloper/messages/response'
+      - $ref: '#/channels/externalDeveloper/messages/event'
+  sendRecipientRequest:
+    action: send
+    channel:
+      $ref: '#/channels/externalRecipient'
+    messages:
+      - $ref: '#/channels/externalRecipient/messages/request'
+  receiveRecipientEvent:
+    action: receive
+    channel:
+      $ref: '#/channels/externalRecipient'
+    messages:
+      - $ref: '#/channels/externalRecipient/messages/response'
+      - $ref: '#/channels/externalRecipient/messages/event'
+components:
+  securitySchemes:
+    verifiedPrincipal:
+      type: X509
+      description: >-
+        Access is established by verified remote-auth middleware or a short-lived,
+        single-use realtime ticket supplied as a WebSocket subprotocol.
+  messages:
+    Request:
+      name: NotificationRealtimeRequest
+      payload:
+        $ref: '#/components/schemas/RequestEnvelope'
+    Response:
+      name: NotificationRealtimeResponse
+      payload:
+        $ref: '#/components/schemas/ResponseEnvelope'
+    Event:
+      name: NotificationRealtimeEvent
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+  schemas:
+    RequestEnvelope:
+      type: object
+      additionalProperties: false
+      required: [protocol_version, event_type, request_id, payload]
+      properties:
+        protocol_version:
+          type: integer
+          const: 1
+        event_type:
+          type: string
+          maxLength: 128
+        request_id:
+          type: string
+          maxLength: 128
+        idempotency_key:
+          type: string
+          maxLength: 128
+        trace_id:
+          type: string
+          maxLength: 256
+        correlation_id:
+          type: string
+          maxLength: 256
+        payload:
+          type: object
+    ResponseEnvelope:
+      type: object
+      required: [protocol_version, type, event_type, status, occurred_at, data]
+      properties:
+        protocol_version:
+          type: integer
+          const: 1
+        type:
+          type: string
+          const: notification.response
+        event_type:
+          type: string
+        request_id:
+          type: [string, 'null']
+        status:
+          type: string
+          enum: [success, accepted]
+        occurred_at:
+          type: string
+          format: date-time
+        tenant_id:
+          type: [string, 'null']
+        application_id:
+          type: [string, 'null']
+        task_id:
+          type: string
+        data:
+          type: object
+    EventEnvelope:
+      type: object
+      required: [protocol_version, type, event_type, event_id, occurred_at, data]
+      properties:
+        protocol_version:
+          type: integer
+          const: 1
+        type:
+          type: string
+          const: notification.event
+        event_type:
+          type: string
+        event_id:
+          type: string
+          format: uuid
+        occurred_at:
+          type: string
+          format: date-time
+        tenant_id:
+          type: [string, 'null']
+        application_id:
+          type: [string, 'null']
+        data:
+          type: object

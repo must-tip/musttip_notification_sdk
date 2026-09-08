@@ -1,0 +1,69 @@
+{
+  "name": "musttip-notification-sdk",
+  "version": "1.0.0",
+  "contract_first": true,
+  "api": {
+    "version": "v1",
+    "base_path": "/api/v1/external/notifications/",
+    "openapi": "specs/openapi-v1.yaml"
+  },
+  "realtime": {
+    "protocol_version": 1,
+    "asyncapi": "specs/asyncapi-v1.yaml",
+    "routes": {
+      "internal_recipient": {
+        "path": "/ws/v1/notifications/",
+        "subprotocol": "musttip.notifications.v1"
+      },
+      "external_developer": {
+        "path": "/ws/v1/external/notifications/",
+        "subprotocol": "musttip.external-notifications.v1"
+      },
+      "external_recipient": {
+        "path": "/ws/v1/external/notifications/recipient/",
+        "subprotocol": "musttip.external-notification-recipient.v1",
+        "ticket_subprotocol_prefix": "musttip.notification-ticket."
+      }
+    }
+  },
+  "authentication": {
+    "oauth_audience": "urn:musttip:notification-service",
+    "recommended_grant": "client_credentials",
+    "browser_management_credentials_forbidden": true
+  },
+  "event_signing": {
+    "algorithm": "HMAC-SHA256",
+    "encoding": "base64url without padding",
+    "headers": [
+      "signature",
+      "signature-key-id"
+    ],
+    "minimum_secret_characters": 32
+  },
+  "generated_client_targets": [
+    "python",
+    "typescript-fetch",
+    "go",
+    "java",
+    "csharp",
+    "php",
+    "ruby",
+    "kotlin",
+    "swift5",
+    "rust",
+    "dart-dio"
+  ],
+  "reference_clients": [
+    "python",
+    "typescript"
+  ]
+}
+
+
+
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https: //github.com/must-tip/musttip_notification_sdk.git
+git push -u origin main

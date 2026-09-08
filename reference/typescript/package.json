@@ -1,0 +1,22 @@
+{
+  "name": "@musttip/notifications-core",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Dependency-free reference transport SDK for Must Tip notifications",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  },
+  "license": "SEE LICENSE IN NOTICE",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

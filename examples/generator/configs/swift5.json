@@ -1,0 +1,12 @@
+{
+  "generatorName": "swift5",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "projectName": "MustTipNotifications",
+    "podVersion": "1.0.0",
+    "swiftPackagePath": "Sources"
+  }
+}

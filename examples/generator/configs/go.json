@@ -1,0 +1,12 @@
+{
+  "generatorName": "go",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "packageName": "musttipnotifications",
+    "packageVersion": "1.0.0",
+    "isGoSubmodule": true
+  }
+}

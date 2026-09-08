@@ -1,0 +1,296 @@
+{
+  "protocol_version": 1,
+  "routes": {
+    "internal_recipient": {
+      "path": "/ws/v1/notifications/",
+      "subprotocol": "musttip.notifications.v1"
+    },
+    "external_developer": {
+      "path": "/ws/v1/external/notifications/",
+      "subprotocol": "musttip.external-notifications.v1"
+    },
+    "external_recipient": {
+      "path": "/ws/v1/external/notifications/recipient/",
+      "subprotocol": "musttip.external-notification-recipient.v1",
+      "ticket_subprotocol_prefix": "musttip.notification-ticket."
+    }
+  },
+  "events": [
+    {
+      "event_type": "connection.ping",
+      "required_scopes": [],
+      "idempotency_required": false,
+      "availability": "All routes"
+    },
+    {
+      "event_type": "connection.heartbeat",
+      "required_scopes": [],
+      "idempotency_required": false,
+      "availability": "All routes"
+    },
+    {
+      "event_type": "external.notifications.subscribe",
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notifications.fetch",
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notifications.sync",
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notifications.summary",
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notification.get",
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notification.create",
+      "required_scopes": [
+        "notifications.send"
+      ],
+      "idempotency_required": true,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notifications.create_batch",
+      "required_scopes": [
+        "notifications.batch.send"
+      ],
+      "idempotency_required": true,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notification.cancel",
+      "required_scopes": [
+        "notifications.cancel"
+      ],
+      "idempotency_required": true,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notification.retry",
+      "required_scopes": [
+        "notifications.retry"
+      ],
+      "idempotency_required": true,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notification.attempts",
+      "required_scopes": [
+        "notifications.attempts.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notification.receipts",
+      "required_scopes": [
+        "notifications.receipts.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notification.interactions",
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.notification.interaction.record",
+      "required_scopes": [
+        "notifications.events.write"
+      ],
+      "idempotency_required": true,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "external.usage.summary",
+      "required_scopes": [
+        "notifications.usage.read"
+      ],
+      "idempotency_required": false,
+      "availability": "External developer monitor"
+    },
+    {
+      "event_type": "notifications.subscribe",
+      "required_scopes": [
+        "notifications:read"
+      ],
+      "idempotency_required": false,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notifications.fetch",
+      "required_scopes": [
+        "notifications:read"
+      ],
+      "idempotency_required": false,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notifications.sync",
+      "required_scopes": [
+        "notifications:read"
+      ],
+      "idempotency_required": false,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.read",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.unread",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.delete",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.archive",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.dismiss",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.open",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.acknowledge",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.pin",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.unpin",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.complete",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.snooze",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.unsnooze",
+      "required_scopes": [
+        "notifications:manage"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.action",
+      "required_scopes": [
+        "notifications:action"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.reply",
+      "required_scopes": [
+        "notifications:reply"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.settings.fetch",
+      "required_scopes": [
+        "notifications:settings:read"
+      ],
+      "idempotency_required": false,
+      "availability": "Internal and external recipient"
+    },
+    {
+      "event_type": "notification.settings.update",
+      "required_scopes": [
+        "notifications:settings:write"
+      ],
+      "idempotency_required": true,
+      "availability": "Internal and external recipient"
+    }
+  ]
+}

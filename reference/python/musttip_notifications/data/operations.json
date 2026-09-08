@@ -1,0 +1,1718 @@
+{
+  "contract_version": "1.0.0",
+  "api_version": "v1",
+  "base_path": "/api/v1/external/notifications",
+  "operations": [
+    {
+      "operation_id": "addNotificationAttachmentReference",
+      "method": "POST",
+      "path": "/notifications/{public_id}/attachments/",
+      "summary": "",
+      "tags": [
+        "Attachments"
+      ],
+      "required_scopes": [
+        "notifications.attachments.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/AttachmentReference"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "buildDigest",
+      "method": "POST",
+      "path": "/digests/",
+      "summary": "",
+      "tags": [
+        "Digests"
+      ],
+      "required_scopes": [
+        "notifications.digests.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/DigestBuild"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "cancelNotification",
+      "method": "POST",
+      "path": "/notifications/{public_id}/cancel/",
+      "summary": "",
+      "tags": [
+        "Notifications"
+      ],
+      "required_scopes": [
+        "notifications.cancel"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        },
+        {
+          "name": "If-Match",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "maxLength": 64
+          }
+        }
+      ],
+      "request_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "commandDigest",
+      "method": "POST",
+      "path": "/digests/{public_id}/command/",
+      "summary": "",
+      "tags": [
+        "Digests"
+      ],
+      "required_scopes": [
+        "notifications.digests.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/DigestCommand"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "consumeRealtimeTicket",
+      "method": "POST",
+      "path": "/realtime/tickets/consume/",
+      "summary": "",
+      "tags": [
+        "Realtime"
+      ],
+      "required_scopes": [
+        "notifications.realtime"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/RealtimeTicketConsume"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "createBulkMutation",
+      "method": "POST",
+      "path": "/bulk-mutations/",
+      "summary": "",
+      "tags": [
+        "Bulk mutations"
+      ],
+      "required_scopes": [
+        "notifications.send"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/BulkMutationCreate"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "createNotification",
+      "method": "POST",
+      "path": "/notifications/",
+      "summary": "",
+      "tags": [
+        "Notifications"
+      ],
+      "required_scopes": [
+        "notifications.send"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/NotificationCreate"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "createNotificationBatch",
+      "method": "POST",
+      "path": "/notifications/batch/",
+      "summary": "",
+      "tags": [
+        "Notifications"
+      ],
+      "required_scopes": [
+        "notifications.batch.send"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "notifications"
+        ],
+        "properties": {
+          "notifications": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/NotificationCreate"
+            }
+          },
+          "atomic": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "createRecipientPreferenceScope",
+      "method": "POST",
+      "path": "/recipients/{recipient_identifier}/preference-scopes/",
+      "summary": "",
+      "tags": [
+        "Preferences"
+      ],
+      "required_scopes": [
+        "notifications.preferences.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "recipient_identifier",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/PreferenceScopeWrite"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "createTemplate",
+      "method": "POST",
+      "path": "/templates/",
+      "summary": "",
+      "tags": [
+        "Templates"
+      ],
+      "required_scopes": [
+        "notifications.templates.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/TemplateCreate"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "deactivateTemplate",
+      "method": "DELETE",
+      "path": "/templates/{template_key}/",
+      "summary": "",
+      "tags": [
+        "Templates"
+      ],
+      "required_scopes": [
+        "notifications.templates.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "template_key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "maxLength": 128
+          }
+        }
+      ],
+      "query_parameters": [
+        {
+          "name": "version",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        {
+          "name": "locale",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 35
+          }
+        },
+        {
+          "name": "channel",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/Channel"
+          }
+        }
+      ],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": null,
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "deleteNotificationAttachment",
+      "method": "DELETE",
+      "path": "/notifications/{public_id}/attachments/{attachment_id}/command/",
+      "summary": "",
+      "tags": [
+        "Attachments"
+      ],
+      "required_scopes": [
+        "notifications.attachments.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "attachment_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": null,
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "deleteRecipientPreferenceScope",
+      "method": "DELETE",
+      "path": "/recipients/{recipient_identifier}/preference-scopes/{scope_application_id}/",
+      "summary": "",
+      "tags": [
+        "Preferences"
+      ],
+      "required_scopes": [
+        "notifications.preferences.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "recipient_identifier",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        },
+        {
+          "name": "scope_application_id",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": null,
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "getBulkMutation",
+      "method": "GET",
+      "path": "/bulk-mutations/{public_id}/",
+      "summary": "",
+      "tags": [
+        "Bulk mutations"
+      ],
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "getDigest",
+      "method": "GET",
+      "path": "/digests/{public_id}/",
+      "summary": "",
+      "tags": [
+        "Digests"
+      ],
+      "required_scopes": [
+        "notifications.digests.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "getExternalNotificationCapabilities",
+      "method": "GET",
+      "path": "/capabilities/",
+      "summary": "",
+      "tags": [
+        "Capabilities"
+      ],
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "getNotification",
+      "method": "GET",
+      "path": "/notifications/{public_id}/",
+      "summary": "",
+      "tags": [
+        "Notifications"
+      ],
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "getNotificationSummary",
+      "method": "GET",
+      "path": "/notifications/summary/",
+      "summary": "",
+      "tags": [
+        "Notifications"
+      ],
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "getRecipientPreferences",
+      "method": "GET",
+      "path": "/recipients/{recipient_identifier}/preferences/",
+      "summary": "",
+      "tags": [
+        "Preferences"
+      ],
+      "required_scopes": [
+        "notifications.preferences.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "recipient_identifier",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "getTemplate",
+      "method": "GET",
+      "path": "/templates/{template_key}/",
+      "summary": "",
+      "tags": [
+        "Templates"
+      ],
+      "required_scopes": [
+        "notifications.templates.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "template_key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "maxLength": 128
+          }
+        }
+      ],
+      "query_parameters": [
+        {
+          "name": "version",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        {
+          "name": "locale",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 35
+          }
+        },
+        {
+          "name": "channel",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/Channel"
+          }
+        }
+      ],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "getUsageSummary",
+      "method": "GET",
+      "path": "/usage/",
+      "summary": "",
+      "tags": [
+        "Usage"
+      ],
+      "required_scopes": [
+        "notifications.usage.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [
+        {
+          "name": "start",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        {
+          "name": "end",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        {
+          "name": "group_by",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "hour",
+              "day",
+              "week",
+              "channel",
+              "status",
+              "notification_type"
+            ],
+            "default": "day"
+          }
+        }
+      ],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "issueRealtimeTicket",
+      "method": "POST",
+      "path": "/realtime/tickets/",
+      "summary": "",
+      "tags": [
+        "Realtime"
+      ],
+      "required_scopes": [
+        "notifications.realtime"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/RealtimeTicketIssue"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "listDigests",
+      "method": "GET",
+      "path": "/digests/",
+      "summary": "",
+      "tags": [
+        "Digests"
+      ],
+      "required_scopes": [
+        "notifications.digests.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "listNotificationAttachments",
+      "method": "GET",
+      "path": "/notifications/{public_id}/attachments/",
+      "summary": "",
+      "tags": [
+        "Attachments"
+      ],
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "listNotificationAttempts",
+      "method": "GET",
+      "path": "/notifications/{public_id}/attempts/",
+      "summary": "",
+      "tags": [
+        "Delivery"
+      ],
+      "required_scopes": [
+        "notifications.attempts.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "listNotificationInteractions",
+      "method": "GET",
+      "path": "/notifications/{public_id}/interactions/",
+      "summary": "",
+      "tags": [
+        "Delivery"
+      ],
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "listNotificationReceipts",
+      "method": "GET",
+      "path": "/notifications/{public_id}/receipts/",
+      "summary": "",
+      "tags": [
+        "Delivery"
+      ],
+      "required_scopes": [
+        "notifications.receipts.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "listNotifications",
+      "method": "GET",
+      "path": "/notifications/",
+      "summary": "",
+      "tags": [
+        "Notifications"
+      ],
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [
+        {
+          "name": "cursor",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        },
+        {
+          "name": "page_size",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500
+          }
+        },
+        {
+          "name": "recipient_identifier",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        },
+        {
+          "name": "notification_type",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 64
+          }
+        },
+        {
+          "name": "category",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 64
+          }
+        },
+        {
+          "name": "delivery_status",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 32
+          }
+        },
+        {
+          "name": "unread",
+          "required": false,
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "search",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      ],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "listPushTokens",
+      "method": "GET",
+      "path": "/push-tokens/",
+      "summary": "",
+      "tags": [
+        "Push tokens"
+      ],
+      "required_scopes": [
+        "notifications.tokens.write"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "listRecipientPreferenceScopes",
+      "method": "GET",
+      "path": "/recipients/{recipient_identifier}/preference-scopes/",
+      "summary": "",
+      "tags": [
+        "Preferences"
+      ],
+      "required_scopes": [
+        "notifications.preferences.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [
+        {
+          "name": "recipient_identifier",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "listTemplates",
+      "method": "GET",
+      "path": "/templates/",
+      "summary": "",
+      "tags": [
+        "Templates"
+      ],
+      "required_scopes": [
+        "notifications.templates.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "previewTemplate",
+      "method": "POST",
+      "path": "/templates/preview/",
+      "summary": "",
+      "tags": [
+        "Templates"
+      ],
+      "required_scopes": [
+        "notifications.templates.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [],
+      "request_schema": {
+        "$ref": "#/components/schemas/TemplatePreview"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "recordNotificationInteraction",
+      "method": "POST",
+      "path": "/notifications/{public_id}/interactions/",
+      "summary": "",
+      "tags": [
+        "Delivery"
+      ],
+      "required_scopes": [
+        "notifications.events.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/InteractionCreate"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "registerPushToken",
+      "method": "POST",
+      "path": "/push-tokens/",
+      "summary": "",
+      "tags": [
+        "Push tokens"
+      ],
+      "required_scopes": [
+        "notifications.tokens.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/PushTokenRegistration"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "retryNotification",
+      "method": "POST",
+      "path": "/notifications/{public_id}/retry/",
+      "summary": "",
+      "tags": [
+        "Delivery"
+      ],
+      "required_scopes": [
+        "notifications.retry"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "channels": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/components/schemas/Channel"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 255
+          }
+        }
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "revokePushToken",
+      "method": "POST",
+      "path": "/push-tokens/revoke/",
+      "summary": "",
+      "tags": [
+        "Push tokens"
+      ],
+      "required_scopes": [
+        "notifications.tokens.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "public_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "installation_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "device_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "external_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 255
+          }
+        }
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "rotatePushToken",
+      "method": "POST",
+      "path": "/push-tokens/rotate/",
+      "summary": "",
+      "tags": [
+        "Push tokens"
+      ],
+      "required_scopes": [
+        "notifications.tokens.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/PushTokenRegistration"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "scanNotificationAttachment",
+      "method": "POST",
+      "path": "/notifications/{public_id}/attachments/{attachment_id}/command/",
+      "summary": "",
+      "tags": [
+        "Attachments"
+      ],
+      "required_scopes": [
+        "notifications.attachments.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "public_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "attachment_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": null,
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "syncNotifications",
+      "method": "GET",
+      "path": "/notifications/sync/",
+      "summary": "",
+      "tags": [
+        "Notifications"
+      ],
+      "required_scopes": [
+        "notifications.read"
+      ],
+      "idempotency_required": false,
+      "path_parameters": [],
+      "query_parameters": [
+        {
+          "name": "since_sequence",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          }
+        },
+        {
+          "name": "cursor",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        },
+        {
+          "name": "page_size",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500
+          }
+        }
+      ],
+      "header_parameters": [],
+      "request_schema": null,
+      "success_statuses": [
+        200
+      ]
+    },
+    {
+      "operation_id": "updateRecipientPreferenceScope",
+      "method": "PATCH",
+      "path": "/recipients/{recipient_identifier}/preference-scopes/{scope_application_id}/",
+      "summary": "",
+      "tags": [
+        "Preferences"
+      ],
+      "required_scopes": [
+        "notifications.preferences.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "recipient_identifier",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        },
+        {
+          "name": "scope_application_id",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        },
+        {
+          "name": "If-Match",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "maxLength": 64
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/PreferenceScopeWrite"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "updateRecipientPreferences",
+      "method": "PATCH",
+      "path": "/recipients/{recipient_identifier}/preferences/",
+      "summary": "",
+      "tags": [
+        "Preferences"
+      ],
+      "required_scopes": [
+        "notifications.preferences.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "recipient_identifier",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        }
+      ],
+      "query_parameters": [],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/NotificationSettingsUpdate"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    },
+    {
+      "operation_id": "updateTemplate",
+      "method": "PATCH",
+      "path": "/templates/{template_key}/",
+      "summary": "",
+      "tags": [
+        "Templates"
+      ],
+      "required_scopes": [
+        "notifications.templates.write"
+      ],
+      "idempotency_required": true,
+      "path_parameters": [
+        {
+          "name": "template_key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "maxLength": 128
+          }
+        }
+      ],
+      "query_parameters": [
+        {
+          "name": "version",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        {
+          "name": "locale",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "maxLength": 35
+          }
+        },
+        {
+          "name": "channel",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/Channel"
+          }
+        }
+      ],
+      "header_parameters": [
+        {
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,127}$"
+          }
+        }
+      ],
+      "request_schema": {
+        "$ref": "#/components/schemas/TemplateUpdate"
+      },
+      "success_statuses": [
+        200,
+        201,
+        202,
+        204
+      ]
+    }
+  ]
+}

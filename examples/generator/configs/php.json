@@ -1,0 +1,12 @@
+{
+  "generatorName": "php",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "invokerPackage": "MustTip\\Notifications",
+    "packageName": "musttip/notifications-sdk",
+    "artifactVersion": "1.0.0"
+  }
+}

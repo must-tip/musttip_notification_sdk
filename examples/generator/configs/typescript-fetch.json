@@ -1,0 +1,13 @@
+{
+  "generatorName": "typescript-fetch",
+  "inputSpec": "../../specs/openapi-v1.yaml",
+  "additionalProperties": {
+    "hideGenerationTimestamp": true,
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "npmName": "@musttip/notifications",
+    "npmVersion": "1.0.0",
+    "supportsES6": true,
+    "typescriptThreePlus": true
+  }
+}

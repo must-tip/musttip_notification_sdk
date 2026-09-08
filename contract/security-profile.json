@@ -1,0 +1,55 @@
+{
+  "audience": "urn:musttip:notification-service",
+  "required_claims": [
+    "sub",
+    "tenant_id",
+    "application_id",
+    "client_id",
+    "principal_type",
+    "session_type",
+    "aud",
+    "scope",
+    "authz_version",
+    "permissions_hash",
+    "jti",
+    "tenant_status",
+    "application_status",
+    "membership_status",
+    "verified"
+  ],
+  "allowed_principal_types": [
+    "application",
+    "service",
+    "workload"
+  ],
+  "allowed_session_types": [
+    "application",
+    "service"
+  ],
+  "tenant_application_scope": "Derived from the verified principal and never request input.",
+  "public_identifiers": "UUID public IDs or scoped natural keys only.",
+  "sensitive_fields_forbidden": [
+    "access_token",
+    "refresh_token",
+    "client_secret",
+    "raw_token",
+    "token_hash",
+    "provider_request",
+    "provider_response",
+    "broker_headers",
+    "object_key",
+    "bucket_alias",
+    "private_key",
+    "authorization",
+    "cookie"
+  ],
+  "event_signature": {
+    "algorithm": "HMAC-SHA256",
+    "encoding": "base64url without padding",
+    "headers": [
+      "signature",
+      "signature-key-id"
+    ],
+    "minimum_secret_characters": 32
+  }
+}

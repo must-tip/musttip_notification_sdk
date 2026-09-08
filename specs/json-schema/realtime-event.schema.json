@@ -1,0 +1,49 @@
+{
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "type",
+    "event_type",
+    "event_id",
+    "occurred_at",
+    "data"
+  ],
+  "properties": {
+    "protocol_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "type": {
+      "type": "string",
+      "const": "notification.event"
+    },
+    "event_type": {
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tenant_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "application_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.musttip.example/notifications/realtime-event-v1.json"
+}
